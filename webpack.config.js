@@ -36,6 +36,14 @@ module.exports = env => {
     devServer: {
       contentBase: path.join(__dirname, 'public'),
       historyApiFallback: true
-    }
+    },
+    plugins: [
+      // new webpack.optimize.CommonsChunkPlugin({
+      //   names: ['vendor', 'manifest']
+      // }),
+      new HtmlWebpackPlugin({
+        template: './public/index.html'
+      })
+    ]
   };
 };
