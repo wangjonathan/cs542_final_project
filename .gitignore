@@ -21,4 +21,4 @@ yarn-debug.log*
 yarn-error.log*
 
 public/bundle.js
-public/vendor.js
+public/vendor*.js
