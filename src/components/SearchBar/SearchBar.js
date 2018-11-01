@@ -25,7 +25,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     fetchData: () => {
-      console.log('fetch...');
       dispatch(fetchMovies())
     }
   };
