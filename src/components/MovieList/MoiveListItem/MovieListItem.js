@@ -1,13 +1,14 @@
 import React from 'react';
 import { Media } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 const MovieListItem = props => (
   <div>
-    <Media key={props.movie.moive_id}>
+    <Media key={props.movie.movie_id}>
       <Media left href="#">
-        <Media object src={props.movie.image} data-src="holder.js/64x64" alt="Generic placeholder image" />
+        <Media src={props.movie.image} />
       </Media>
-      <Media body>
+      <Media body tag={Link} to={`/movieDetail/${props.movie.movie_id}`}>
         <Media heading>
           {props.movie.title}
         </Media>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+
 import {
   Collapse,
   Navbar,
@@ -21,7 +22,7 @@ class Header extends Component {
     super(props);
 
     this.toggle = this.toggle.bind(this);
-    
+
     this.state = {
       isOpen: false
     };
@@ -31,6 +32,7 @@ class Header extends Component {
       isOpen: !this.state.isOpen
     });
   }
+
   render() {
     return (
       <div>
@@ -69,7 +71,7 @@ class Header extends Component {
 
 const mapStateToProps = state => {
   return {
-    movies: state.movies
+    isSpinnerActive: state.context.isSpinnerActive
   };
 };
 

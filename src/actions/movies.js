@@ -1,8 +1,11 @@
 import axios from 'axios';
+import { GET_MOVIES } from './actionTypes';
+import { toggleSpinner } from './context';
+import { showLoading, hideLoading } from 'react-redux-loading-bar'
 
 export function getMovies(text) {
   return {
-    type: 'GET_MOVIES'
+    type: GET_MOVIES
   }
 }
 
@@ -30,15 +33,15 @@ export function setMovies(movies) {
 
 export const fetchMovies = () => {
   return dispatch => {
-    console.log('fetchMovies');
+    dispatch(showLoading());
     axios.get('https://cs542-final-project-server.herokuapp.com/movies', {})
       .then(res => {
         console.log(res);
         dispatch(setMovies(res.data));
+        dispatch(hideLoading());
       })
       .catch(err => {
         console.log(err);
-        dispatch(setMovies(res));
       })
   }
 }

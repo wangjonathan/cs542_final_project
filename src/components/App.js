@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import Header from './Header';
 import SearchBar from './SearchBar/SearchBar';
+import MovieDetail from './MovieDetail/MovieDetail';
 import MovieList from './MovieList/MovieList';
 
 const Home = () => (
@@ -19,10 +20,10 @@ const App = () => {
         <div>
           <Header />
           <SearchBar />
-          <MovieList />
+          {/* <MovieList /> */}
           <Switch>
-            {/* <Route exact path='/' component={Home}></Route> */}
-            <Route exact path='/search' component={Home}></Route>
+            <Route exact path='/movieList' component={MovieList}></Route>
+            <Route exact path='/movieDetail/:id' component={MovieDetail}></Route>
             {/* <Route path='/' component={}></Route> */}
           </Switch>
         </div>
