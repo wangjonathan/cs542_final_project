@@ -4,7 +4,7 @@ const defaultState = {
   movies: []
 };
 
-export default (state = defaultState, action) => {
+export default (state = {}, action) => {
   switch (action.type) {
     case GET_MOVIES:
       return Object.assign({}, state, {

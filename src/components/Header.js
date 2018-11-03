@@ -3,66 +3,81 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import {
-  Collapse,
   Navbar,
-  NavbarToggler,
-  NavbarBrand,
   Nav,
   NavItem,
-  NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem
-} from 'reactstrap';
+  NavDropdown,
+  MenuItem,
+  FormGroup,
+  FormControl,
+  Button,
+  DropdownButton,
+  Image
+} from 'react-bootstrap'
+import SearchBar from '@opuscapita/react-searchbar';
 
 import { fetchMovies } from '../actions/movies';
+import './SearchBar/SearchBar.css';
+import Logo from '../../image/popcorn.png';
 class Header extends Component {
   constructor(props) {
     super(props);
 
     this.toggle = this.toggle.bind(this);
-
+    this.onChangeDropdown = this.onChangeDropdown.bind(this);
     this.state = {
-      isOpen: false
+      isOpen: false,
+      activeDropdown: 'Search by...'
     };
   }
+
   toggle() {
     this.setState({
       isOpen: !this.state.isOpen
     });
   }
 
+  onChangeDropdown(evt) {
+    this.setState({ activeDropdown: evt })
+  }
+
   render() {
     return (
       <div>
-        <Navbar color="light" light expand="md">
-          <NavbarBrand href="/">Movie</NavbarBrand>
-          <NavbarToggler onClick={this.toggle} />
-          <Collapse isOpen={this.state.isOpen} navbar>
-            <Nav className="ml-auto" navbar>
-              <NavItem>
-                <NavLink href='/'>Home</NavLink>
-              </NavItem>
-              <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav caret>
-                  Options
-                </DropdownToggle>
-                <DropdownMenu right>
-                  <DropdownItem>
-                    Option 1
-                  </DropdownItem>
-                  <DropdownItem>
-                    Option 2
-                  </DropdownItem>
-                  <DropdownItem divider />
-                  <DropdownItem>
-                    Reset
-                  </DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
+        <Navbar>
+          <Navbar.Header>
+            <Image src={Logo} id='Logo' />
+          </Navbar.Header>
+          <Navbar.Header>
+            <Navbar.Brand>
+              <Link to="/movieList">Popcorn Review</Link>
+            </Navbar.Brand>
+          </Navbar.Header>
+          <Navbar.Collapse>
+            <Navbar.Form pullLeft>
+              <SearchBar
+                onSearch={this.props.fetchData}
+                dynamicSearchStartsFrom={0}
+              />
+
+            </Navbar.Form>
+            <Nav>
+              <NavDropdown eventKey={3} title={this.state.activeDropdown} id="basic-nav-dropdown" onSelect={this.onChangeDropdown}>
+                <MenuItem eventKey='Title'>Title</MenuItem>
+                <MenuItem eventKey='Actor'>Actor</MenuItem>
+                <MenuItem eventKey='Director'>Director</MenuItem>
+              </NavDropdown>
             </Nav>
-          </Collapse>
+            <Nav pullRight>
+              <NavItem eventKey={1} href="#">
+                Link
+              </NavItem>
+              <NavItem eventKey={2} href="#">
+                Link
+              </NavItem>
+            </Nav>
+          </Navbar.Collapse>
+
         </Navbar>
       </div>
     );
@@ -77,8 +92,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchData: (url) => dispatch(fetchMovies)
+    fetchData: () => {
+      dispatch(fetchMovies());
+    }
   };
-};
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

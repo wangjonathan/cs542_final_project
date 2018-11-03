@@ -1,40 +1,30 @@
 import React, { Component } from 'react';
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import Select from 'react-select';
+import SelectList from 'react-widgets/lib/SelectList'
 
+import 'react-widgets/dist/css/react-widgets.css';
 class SearchFilter extends Component {
   constructor(props) {
     super(props);
 
-    this.toggle = this.toggle.bind(this);
-    this.onClickDropdownItem = this.onClickDropdownItem.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.state = {
-      dropdownOpen: false
+      options: ['orange', 'red', 'blue', 'purple'],
+      selectedOption: null
     };
   }
 
-  toggle() {
-    this.setState(prevState => ({
-      dropdownOpen: !prevState.dropdownOpen
-    }));
-  }
-
-  onClickDropdownItem(event) {
-    console.log(event.target.innerHTML);
+  handleChange(selectedOption) {
+    this.setState({ selectedOption });
+    console.log(`Option selected:`, selectedOption);
   }
 
   render() {
+    const { options } = this.state;
     return (
-      <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-        <DropdownToggle caret>
-          Dropdown
-        </DropdownToggle>
-        <DropdownMenu>
-          <DropdownItem onClick={this.onClickDropdownItem}>Title</DropdownItem>
-          <DropdownItem>Director</DropdownItem>
-          <DropdownItem>Year</DropdownItem>
-          <DropdownItem>Genre</DropdownItem>
-        </DropdownMenu>
-      </Dropdown>
+      <SelectList
+        data={options}
+      />
     );
   }
 };

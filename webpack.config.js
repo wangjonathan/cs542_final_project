@@ -29,6 +29,10 @@ module.exports = env => {
         {
           use: ['style-loader', 'css-loader'],
           test: /\.css$/
+        },
+        {
+          test: /\.(ttf|eot|svg|png|gif|woff)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+          use: 'url-loader?name=[name].[ext]',
         }
       ]
     },

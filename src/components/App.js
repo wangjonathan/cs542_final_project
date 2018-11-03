@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Header from './Header';
+import Modal from './Modal/Modal';
 import SearchBar from './SearchBar/SearchBar';
 import MovieDetail from './MovieDetail/MovieDetail';
 import MovieList from './MovieList/MovieList';
@@ -19,12 +20,12 @@ const App = () => {
       <BrowserRouter>
         <div>
           <Header />
-          <SearchBar />
+          {/* <SearchBar /> */}
           {/* <MovieList /> */}
           <Switch>
             <Route exact path='/movieList' component={MovieList}></Route>
             <Route exact path='/movieDetail/:id' component={MovieDetail}></Route>
-            {/* <Route path='/' component={}></Route> */}
+            <Route exact path='/signup' component={Modal}></Route>
           </Switch>
         </div>
 
@@ -34,7 +35,6 @@ const App = () => {
 };
 
 const mapStateToProps = state => {
-  console.log(state);
   return {
     movies: state.movies.movies
   }

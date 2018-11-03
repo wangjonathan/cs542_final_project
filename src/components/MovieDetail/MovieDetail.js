@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Media } from 'reactstrap';
+import { 
+  PageHeader, 
+  Media, 
+  Badge,
+  Image
+} from 'react-bootstrap';
 import StarRatingComponent from 'react-star-rating-component';
 
 class MovieDetail extends Component {
@@ -11,38 +16,24 @@ class MovieDetail extends Component {
   }
 
   filterMovie(id) {
-    console.log(typeof id);
     return this.props.movies.find(movie => movie.movie_id == id);
   }
 
   render() {
     const { id } = this.props.match.params;
     const movie = this.filterMovie(id);
-    console.log(movie);
+    // console.log(movie);
     return (
       <div>
-        <Media key={movie.movie_id}>
-          <Media left href="#">
-            <Media src={movie.image} />
-          </Media>
-          <Media body>
-            <Media heading>
-              {movie.title}
-            </Media>
-            {movie.director}
-            <div>
-              <StarRatingComponent
-                name="rate2"
-                editing={false}
-                starCount={10}
-                value={Number(movie.rating)}
-              />
-            </div>
-            {movie.year}
-            {movie.duration}
-
-          </Media>
-        </Media>
+        <PageHeader>
+          {movie.title}
+          <small>
+            <Badge>{movie.rating}/10</Badge>
+            {/* <Star
+             */}
+          </small>
+        </PageHeader>
+        <Image src={movie.image} responsive />;
       </div>
     )
   }
