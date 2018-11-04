@@ -2,7 +2,7 @@ import axios from 'axios';
 import { AUTH_USER, UNAUTH_USER, AUTH_ERR } from './actionTypes';
 import history from '../history/history';
 
-const ROOT_URL = 'http://localhost:5000' || 'https://cs542-final-project-server.herokuapp.com';
+const ROOT_URL = 'https://cs542-final-project-server.herokuapp.com' || 'http://localhost:5000';
 
 
 export function authUser(user) {
