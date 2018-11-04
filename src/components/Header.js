@@ -14,8 +14,10 @@ import {
   DropdownButton,
   Image
 } from 'react-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap';
 import SearchBar from '@opuscapita/react-searchbar';
 
+import { signoutUser } from '..//actions/auth';
 import { fetchMovies } from '../actions/movies';
 import './SearchBar/SearchBar.css';
 import Logo from '../../image/popcorn.png';
@@ -42,6 +44,7 @@ class Header extends Component {
   }
 
   render() {
+    const { authenticated, user } = this.props;
     return (
       <div>
         <Navbar>
@@ -68,14 +71,31 @@ class Header extends Component {
                 <MenuItem eventKey='Director'>Director</MenuItem>
               </NavDropdown>
             </Nav>
-            <Nav pullRight>
-              <NavItem eventKey={1} href="#">
-                Link
-              </NavItem>
-              <NavItem eventKey={2} href="#">
-                Link
-              </NavItem>
-            </Nav>
+            {authenticated ?
+              <Nav pullRight>
+                <NavItem>
+                  Signed in as: {user.username}
+                </NavItem>
+                <LinkContainer to="/signout">
+                <NavItem onClick={() => { this.props.signoutUser() }}>
+                  Sign out
+                </NavItem>
+                </LinkContainer>
+              </Nav>
+              :
+              <Nav pullRight>
+                <LinkContainer to="/signup">
+                  <NavItem>
+                    Sign up
+                </NavItem>
+                </LinkContainer>
+                <LinkContainer to="/signin">
+                  <NavItem>
+                    Login
+                </NavItem>
+                </LinkContainer>
+              </Nav>
+            }
           </Navbar.Collapse>
 
         </Navbar>
@@ -85,8 +105,10 @@ class Header extends Component {
 }
 
 const mapStateToProps = state => {
+  const { auth } = state;
   return {
-    isSpinnerActive: state.context.isSpinnerActive
+    authenticated: auth.authenticated,
+    user: auth.user
   };
 };
 
@@ -94,6 +116,9 @@ const mapDispatchToProps = dispatch => {
   return {
     fetchData: () => {
       dispatch(fetchMovies());
+    },
+    signoutUser: () => {
+      dispatch(signoutUser());
     }
   };
 }

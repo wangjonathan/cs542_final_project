@@ -6,8 +6,15 @@ import thunk from 'redux-thunk';
 import App from './components/App';
 import reducers from './reducers';
 
+import { authUser } from './actions/auth';
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducers, {}, composeEnhancers(applyMiddleware(thunk)));
+
+const token = localStorage.getItem('token');
+console.log(token);
+if (token) {
+  // store.dispatch(authUser);
+}
 
 ReactDOM.render(
   <Provider store={store}>

@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { GET_MOVIES } from './actionTypes';
-import { toggleSpinner } from './context';
 import { showLoading, hideLoading } from 'react-redux-loading-bar'
 
 export function getMovies(text) {
