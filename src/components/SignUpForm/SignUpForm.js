@@ -39,7 +39,7 @@ class SignUpForm extends Component {
       email: '',
       password: '',
       dob: Moment(new Date()).format('MM/DD/YYYY'),
-      favGenre: [],
+      fav_genres: [],
       gender: '',
       filterOptions: [
         { value: 'Romance', label: 'Romance' },
@@ -88,8 +88,8 @@ class SignUpForm extends Component {
   }
 
   handleGenreChange(selectedGenre) {
-    const favGenre = selectedGenre.map(genre => genre.value);
-    this.setState(Object.assign({}, this.state, { favGenre }))
+    const fav_genres = selectedGenre.map(genre => genre.value);
+    this.setState(Object.assign({}, this.state, { fav_genres }))
   }
 
   handleDateChange(selectedDate) {
@@ -108,7 +108,7 @@ class SignUpForm extends Component {
       email,
       password,
       dob,
-      favGenre,
+      fav_genres,
       gender
     } = this.state
     this.props.signupUser({
@@ -116,7 +116,7 @@ class SignUpForm extends Component {
       email,
       password,
       dob,
-      favGenre,
+      fav_genres,
       gender
     });
   }
