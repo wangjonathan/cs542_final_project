@@ -2,9 +2,6 @@ import axios from 'axios';
 import { AUTH_USER, UNAUTH_USER, AUTH_ERR } from './actionTypes';
 import history from '../history/history';
 
-const ROOT_URL = 'https://cs542-final-project-server.herokuapp.com' || 'http://localhost:5000';
-
-
 export function authUser(user) {
   return {
     type: AUTH_USER,
@@ -29,7 +26,7 @@ export function authError(error) {
 export const signupUser = (newUser) => {
   return dispatch => {
     // dispatch(showLoading());
-    axios.post(`${ROOT_URL}/signup`, newUser)
+    axios.post(`${process.env.ROOT_URL}/signup`, newUser)
       .then(res => {
         console.log(res);
         // dispatch(setMovies(res.data));
@@ -49,7 +46,7 @@ export const signupUser = (newUser) => {
 export const signinUser = ({ email, password }) => {
   return dispatch => {
     // dispatch(showLoading());
-    axios.post(`${ROOT_URL}/signin`, { email, password })
+    axios.post(`${process.env.ROOT_URL}/signin`, { email, password })
       .then(res => {
         console.log(res);
         // dispatch(setMovies(res.data));

@@ -22,3 +22,5 @@ yarn-error.log*
 
 public/bundle.js
 public/vendor*.js
+
+/config/config.json
