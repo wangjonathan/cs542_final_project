@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { AUTH_USER, UNAUTH_USER, AUTH_ERR } from './actionTypes';
+import { AUTH_USER, UNAUTH_USER, AUTH_ERR, AUTH_LOADING } from './actionTypes';
 import history from '../history/history';
 
 export function authUser(user) {
@@ -23,42 +23,47 @@ export function authError(error) {
   }
 };
 
+export function authLoading(isWaiting) {
+  return {
+    type: AUTH_LOADING,
+    isWaiting
+  }
+};
+
 export const signupUser = (newUser) => {
   return dispatch => {
-    // dispatch(showLoading());
+    dispatch(authLoading('loading'));
     axios.post(`${process.env.ROOT_URL}/signup`, newUser)
       .then(res => {
-        console.log(res);
-        // dispatch(setMovies(res.data));
-        // dispatch(hideLoading());
-
+        dispatch(authLoading('success'));
         localStorage.setItem('token', res.data.token);
         dispatch(authUser(res.data.user));
+        dispatch(authLoading(''));
         history.push('/')
       })
       .catch(err => {
         console.log(err);
         // dispatch(authError(err.response.data.error));
+        dispatch(authLoading('success'));
       })
   }
 }
 
 export const signinUser = ({ email, password }) => {
   return dispatch => {
-    // dispatch(showLoading());
+    dispatch(authLoading('loading'));
     axios.post(`${process.env.ROOT_URL}/signin`, { email, password })
       .then(res => {
-        console.log(res);
-        // dispatch(setMovies(res.data));
-        // dispatch(hideLoading());
-
+        dispatch(authLoading('success'));
         localStorage.setItem('token', res.data.token);
         dispatch(authUser(res.data.user));
+        dispatch(authLoading(''));
         history.push('/')
       })
       .catch(err => {
         // console.log(err.response.data);
         dispatch(authError(err.response.data));
+        dispatch(authLoading(''));
       })
   }
 }

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-// import { reduxForm } from 'redux-form';
+import ProgressButton from 'react-progress-button'
+import '../../../node_modules/react-progress-button/react-progress-button.css';
 import {
   FormGroup,
   ControlLabel,
@@ -57,7 +58,8 @@ class SignUpForm extends Component {
         { value: 'Family', label: 'Family' },
         { value: 'Animation', label: 'Animation' },
         { value: 'Crime', label: 'Crime' },
-      ]
+      ],
+      buttonState: ''
     }
   }
 
@@ -170,7 +172,10 @@ class SignUpForm extends Component {
             <Radio inline name='radioGroup' onChange={this.handleGenderChange} value='F'>Female</Radio>
           </FormGroup>
         </form>
-        <Button bsStyle='primary' onClick={this.handleSubmit}>Sign up</Button>
+        {/* <Button bsStyle='primary' onClick={this.handleSubmit}>Sign up</Button> */}
+        <ProgressButton className='submitBtn' onClick={this.handleSubmit} state={this.props.isWaiting}>
+          Submit
+        </ProgressButton>
       </div>
     )
   }
@@ -179,7 +184,8 @@ class SignUpForm extends Component {
 const mapStateToProps = state => {
   const { auth } = state;
   return {
-    error: auth.error
+    error: auth.error,
+    isWaiting: auth.isWaiting
   }
 };
 

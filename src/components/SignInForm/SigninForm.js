@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-// import { reduxForm } from 'redux-form';
+import ProgressButton from 'react-progress-button'
 import {
   FormGroup,
   ControlLabel,
@@ -49,7 +49,7 @@ class SignInForm extends Component {
 
   render() {
     const { filterOptions } = this.state;
-    const { error } = this.props;
+    const { error} = this.props;
     return (
       <div className='container'>
       <PageHeader>
@@ -65,12 +65,15 @@ class SignInForm extends Component {
             <FormControl type="password" onChange={this.handelPasswordChange} />
           </FormGroup>
         </form>
-        <Button bsStyle='primary' onClick={this.handleSubmit}>Sign in</Button>
+        {/* <Button bsStyle='primary' onClick={this.handleSubmit}>Sign in</Button> */}
         {!error ||
           <Alert bsStyle="danger">
             <strong>{error}</strong>
           </Alert>
         }
+        <ProgressButton className='submitBtn' onClick={this.handleSubmit} state={this.props.isWaiting}>
+          Submit
+        </ProgressButton>
       </div>
     )
   }
@@ -79,7 +82,8 @@ class SignInForm extends Component {
 const mapStateToProps = state => {
   const { auth } = state;
   return {
-    error: auth.error
+    error: auth.error,
+    isWaiting: auth.isWaiting
   }
 };
 

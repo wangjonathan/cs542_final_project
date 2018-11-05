@@ -36,6 +36,7 @@
     "react-bootstrap": "^0.32.4",
     "react-dom": "^16.6.0",
     "react-google-login-component": "^0.9.3",
+    "react-progress-button": "^5.1.0",
     "react-redux": "^5.1.0",
     "react-redux-loading-bar": "^4.1.0",
     "react-router": "^4.3.1",
