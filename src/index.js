@@ -16,12 +16,6 @@ if (token) {
   // store.dispatch(authUser);
 }
 
-var env = process.env.NODE_ENV || 'development';
-console.log(process.env);
-// if (env === 'development' || env === 'test') {
-//   require('../config/config');
-// }
-
 ReactDOM.render(
   <Provider store={store}>
     <App />

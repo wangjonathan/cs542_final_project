@@ -2,6 +2,9 @@ import axios from 'axios';
 import { AUTH_USER, UNAUTH_USER, AUTH_ERR, AUTH_LOADING } from './actionTypes';
 import history from '../history/history';
 
+var env = process.env.NODE_ENV || 'development';
+const ROOT_URL = env === 'production' ? 'https://cs542-final-project-server.herokuapp.com' : 'http://localhost:5000'
+console.log(ROOT_URL);
 export function authUser(user) {
   return {
     type: AUTH_USER,
@@ -33,7 +36,7 @@ export function authLoading(isWaiting) {
 export const signupUser = (newUser) => {
   return dispatch => {
     dispatch(authLoading('loading'));
-    axios.post(`${process.env.ROOT_URL}/signup`, newUser)
+    axios.post(`${ROOT_URL}/signup`, newUser)
       .then(res => {
         dispatch(authLoading('success'));
         localStorage.setItem('token', res.data.token);
@@ -52,7 +55,7 @@ export const signupUser = (newUser) => {
 export const signinUser = ({ email, password }) => {
   return dispatch => {
     dispatch(authLoading('loading'));
-    axios.post(`${process.env.ROOT_URL}/signin`, { email, password })
+    axios.post(`${ROOT_URL}/signin`, { email, password })
       .then(res => {
         dispatch(authLoading('success'));
         localStorage.setItem('token', res.data.token);
