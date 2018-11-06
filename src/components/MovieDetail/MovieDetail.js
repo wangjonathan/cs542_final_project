@@ -34,10 +34,18 @@ class MovieDetail extends Component {
       movie: props.movies.find(movie => movie.movie_id == id)
     }
   }
-
-  componentDidMount() {
+  componentWillMount() {
     const { id } = this.props.match.params;
     this.props.fetchMovieRecommend(id);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.match.params !== this.props.match.params) {
+      console.log('update');
+      const { id } = this.props.match.params;
+      this.props.fetchMovieRecommend(id);
+    }
+
   }
 
   // componentDidUpdate() {
@@ -50,7 +58,7 @@ class MovieDetail extends Component {
     const movie = this.props.movies.find(movie => movie.movie_id == id)
     const panes = [
       { menuItem: 'Review', render: () => <Tab.Pane attached={false}><Review /></Tab.Pane> },
-      { menuItem: 'Recommend', render: () => <Tab.Pane attached={false}><Recommend movieRecommend={this.props.movieRecommend}/></Tab.Pane> },
+      { menuItem: 'Recommend', render: () => <Tab.Pane attached={false}><Recommend movieRecommend={this.props.movieRecommend} /></Tab.Pane> },
     ];
     return (
       <div>
@@ -78,11 +86,22 @@ class MovieDetail extends Component {
 
               <Item.Content floated='right' verticalAlign='top'>
                 <Item.Header>{movie.title}</Item.Header>
+                <Item.Meta>Genre</Item.Meta>
+                <Item.Description>
+                  {movie.genre.map(actor => <span key={actor.genre}>{actor.genre}<br /></span>)}
+                </Item.Description>
+                <Item.Meta>Director</Item.Meta>
+                <Item.Description>
+                  {movie.director}
+                </Item.Description>
+                <Item.Meta>Actor</Item.Meta>
+                <Item.Description>
+                  {movie.actor.map(actor => <span key={actor.actor_name}>{actor.actor_name}<br /></span>)}
+                </Item.Description>
                 <Item.Meta>Description</Item.Meta>
                 <Item.Description>
                   {movie.description}
                 </Item.Description>
-                <Item.Extra>Additional Details</Item.Extra>
               </Item.Content>
             </Item>
           </Item.Group>

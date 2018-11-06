@@ -1,17 +1,21 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { Item } from 'semantic-ui-react'
 
 const Recommend = props => {
-  console.log('Recommend', props.movieRecommend);
+  // console.log('Recommend', props.movieRecommend);
+  const { movieRecommend } = props;
   return (
     <div>
       <Item.Group relaxed='very'>
-        {props.movieRecommend.map(movie => (
+        {!movieRecommend || movieRecommend.map(movie => (
           <Item>
-            <Item.Image size='tiny' src='/images/wireframe/image.png' />
+            <Item.Image size='tiny' src={movie.image} />
 
             <Item.Content verticalAlign='middle'>
-              <Item.Header as='a'>{`movie_id: ${movie}`}</Item.Header>
+              <Link to={`/movieDetail/${movie.movie_id}`}>
+                <Item.Header>{movie.title}</Item.Header>
+              </Link>
             </Item.Content>
           </Item>
         ))}

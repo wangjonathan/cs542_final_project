@@ -55,7 +55,8 @@ export const fetchMovies = () => {
 export const fetchMovieRecommend = movie_id => {
   return dispatch => {
     // dispatch(showLoading());
-    axios.get('http://localhost:5000/movies/recommend', {
+    // console.log('fetchRecommend');
+    axios.get('https://cs542-final-project-server.herokuapp.com/movies/recommend', {
       params: { movie_id }
     })
       .then(res => {

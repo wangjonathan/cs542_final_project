@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createBrowserHistory } from 'history'
-
+import { Carousel } from 'react-responsive-carousel';
 import LikesRank from './LikesRank/LikesRank';
 import Header from './Header';
 import Modal from './Modal/Modal';
