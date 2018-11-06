@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_MOVIES, GET_MOVIE_RECOMMEND } from './actionTypes';
+import { GET_MOVIES, GET_MOVIE_RECOMMEND, SET_MOVIE_RECOMMEND } from './actionTypes';
 import { showLoading, hideLoading } from 'react-redux-loading-bar'
 
 export function getMovies(text) {
@@ -30,6 +30,13 @@ export function setMovies(movies) {
   }
 }
 
+export function setMovieRecommend(movieRecommend) {
+  return {
+    type: SET_MOVIE_RECOMMEND,
+    payload: movieRecommend
+  }
+}
+
 export const fetchMovies = () => {
   return dispatch => {
     dispatch(showLoading());
@@ -53,7 +60,7 @@ export const fetchMovieRecommend = movie_id => {
     })
       .then(res => {
         console.log(res);
-        // dispatch(setMovies(res.data));
+        dispatch(setMovieRecommend(res.data));
         // dispatch(hideLoading());
       })
       .catch(err => {

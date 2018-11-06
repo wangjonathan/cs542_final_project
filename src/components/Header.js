@@ -13,13 +13,15 @@ import {
   Button,
   DropdownButton,
   Image
-} from 'react-bootstrap'
+} from 'react-bootstrap';
+import { Dropdown, Icon } from 'semantic-ui-react';
 import { Search, Grid, Header, Segment } from 'semantic-ui-react'
 import { LinkContainer } from 'react-router-bootstrap';
+import history from '../history/history';
 import SearchBar from './SearchBar/SearchBar';
-
 import { signoutUser } from '..//actions/auth';
 import { fetchMovies } from '../actions/movies';
+
 import './SearchBar/SearchBar.css';
 import Logo from '../../image/popcorn.png';
 
@@ -27,24 +29,25 @@ class HeaderBar extends Component {
   constructor(props) {
     super(props);
 
-    this.toggle = this.toggle.bind(this);
+    // this.toggle = this.toggle.bind(this);
     this.onChangeDropdown = this.onChangeDropdown.bind(this);
     this.handleResultSelect = this.handleResultSelect.bind(this);
     this.handleSearchChange = this.handleSearchChange.bind(this);
+    this.handeleDropdownChange = this.handeleDropdownChange.bind(this);
     this.state = {
-      isOpen: false,
+      // isOpen: false,
       activeDropdown: 'Search by...',
-      "isLoading": false,
-      "results": [],
-      "value": ""
+      isLoading: false,
+      results: [],
+      value: "",
     };
   }
 
-  toggle() {
-    this.setState({
-      isOpen: !this.state.isOpen
-    });
-  }
+  // toggle() {
+  //   this.setState({
+  //     isOpen: !this.state.isOpen
+  //   });
+  // }
 
   onChangeDropdown(evt) {
     this.setState({ activeDropdown: evt })
@@ -76,9 +79,37 @@ class HeaderBar extends Component {
     }, 300)
   }
 
+  handeleDropdownChange(e, { value }) {
+    switch (value) {
+      case 'signout': {
+        history.push(`/${value}`);
+        this.props.signoutUser();
+      }
+    }
+    
+  }
+
   render() {
     const { authenticated, user, fetchMovies } = this.props;
     const { isLoading, value, results } = this.state;
+    const trigger = (
+      <span>
+        <Icon name='user' /> Hello, {!user || user.username}
+      </span>
+    );
+    const options = [
+      {
+        key: 'user',
+        text: (
+          <span>
+            Signed in as <strong>Bob Smith</strong>
+          </span>
+        ),
+        disabled: true,
+      },
+      { key: 'profile', text: 'Your Profile', value: 'profile' },
+      { key: 'sign-out', text: 'Sign Out', value: 'signout' },
+    ]
     return (
       <div>
         <Navbar>
@@ -116,13 +147,17 @@ class HeaderBar extends Component {
             {authenticated ?
               <Nav pullRight>
                 <NavItem>
+                  <Dropdown trigger={trigger} options={options} onChange={this.handeleDropdownChange} />
+                </NavItem>
+
+                {/* <NavItem>
                   Signed in as: {user.username}
                 </NavItem>
                 <LinkContainer to="/signout">
                   <NavItem onClick={() => { this.props.signoutUser() }}>
                     Sign out
                 </NavItem>
-                </LinkContainer>
+                </LinkContainer> */}
               </Nav>
               :
               <Nav pullRight>

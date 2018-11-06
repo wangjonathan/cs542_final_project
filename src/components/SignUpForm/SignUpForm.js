@@ -84,7 +84,7 @@ class SignUpForm extends Component {
     }));
   }
 
-  handleGenreChange(selectedGenre, { value }) {
+  handleGenreChange(e, { value }) {
     this.setState(Object.assign({}, this.state, { fav_genres: value }))
   }
 

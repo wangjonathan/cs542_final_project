@@ -16,7 +16,7 @@ import history from '../history/history';
 const Home = () => (
   <div>
     Home
-    <LikesRank />
+    {/* <LikesRank /> */}
   </div>
 );
 

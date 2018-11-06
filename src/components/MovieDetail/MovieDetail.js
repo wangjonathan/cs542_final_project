@@ -7,21 +7,28 @@ import {
   Image
 } from 'react-bootstrap';
 import {
+  Container,
   Divider,
   Button,
   Comment,
   Form,
   Header,
   Label,
-  Icon
+  Icon,
+  Tab,
+  Item
 } from 'semantic-ui-react';
+
+import Review from './Review/Review';
+import Recommend from './Recommend/Recommend';
+
 import { fetchMovieRecommend } from '../../actions/movies';
 
 class MovieDetail extends Component {
   constructor(props) {
     super(props);
 
-    console.log(props);
+    // console.log(props);
     const { id } = props.match.params;
     this.state = {
       movie: props.movies.find(movie => movie.movie_id == id)
@@ -33,111 +40,66 @@ class MovieDetail extends Component {
     this.props.fetchMovieRecommend(id);
   }
 
+  // componentDidUpdate() {
+  //   const { id } = this.props.match.params;
+  //   this.props.fetchMovieRecommend(id);
+  // }
+
   render() {
     const { id } = this.props.match.params;
-    const { movie } = this.state;
-    // const movie = this.filterMovie(id);
-    // console.log(movie);
+    const movie = this.props.movies.find(movie => movie.movie_id == id)
+    const panes = [
+      { menuItem: 'Review', render: () => <Tab.Pane attached={false}><Review /></Tab.Pane> },
+      { menuItem: 'Recommend', render: () => <Tab.Pane attached={false}><Recommend movieRecommend={this.props.movieRecommend}/></Tab.Pane> },
+    ];
     return (
       <div>
-        <Header as='h3' dividing>
-          {movie.title}
-          <small>
-            <Badge>{movie.rating}/10</Badge>
-          </small>
-          <Button as='div' labelPosition='right'>
-            <Button color='red'>
-              <Icon name='heart' />
-              Like
-      </Button>
-            <Label as='a' basic color='red' pointing='left'>
-              2,048
-      </Label>
+
+        <Container className='container'>
+          <Header as='h1' dividing>
+            {movie.title}
+            <small>
+              <Badge>{movie.rating}/10</Badge>
+            </small>
+            <Button as='div' labelPosition='right' size='tiny'>
+              <Button color='red'>
+                <Icon name='heart' />
+                Like
           </Button>
-          
-        </Header>
+              <Label as='a' basic color='red' pointing='left'>
+                2,048
+             </Label>
+            </Button>
 
-
-        <Image src={movie.image} responsive />;
-    <Divider />
-        <Comment.Group>
-          <Header as='h3' dividing>
-            Comments
           </Header>
+          <Item.Group relaxed>
+            <Item>
+              <Item.Image src={movie.image} />
 
-          <Comment>
-            <Comment.Avatar src='/images/avatar/small/matt.jpg' />
-            <Comment.Content>
-              <Comment.Author as='a'>Matt</Comment.Author>
-              <Comment.Metadata>
-                <div>Today at 5:42PM</div>
-              </Comment.Metadata>
-              <Comment.Text>How artistic!</Comment.Text>
-              <Comment.Actions>
-                <Comment.Action>Reply</Comment.Action>
-              </Comment.Actions>
-            </Comment.Content>
-          </Comment>
+              <Item.Content floated='right' verticalAlign='top'>
+                <Item.Header>{movie.title}</Item.Header>
+                <Item.Meta>Description</Item.Meta>
+                <Item.Description>
+                  {movie.description}
+                </Item.Description>
+                <Item.Extra>Additional Details</Item.Extra>
+              </Item.Content>
+            </Item>
+          </Item.Group>
+          <Tab menu={{ secondary: true, pointing: true }} panes={panes} />
+        </Container>
 
-          <Comment>
-            <Comment.Avatar src='/images/avatar/small/elliot.jpg' />
-            <Comment.Content>
-              <Comment.Author as='a'>Elliot Fu</Comment.Author>
-              <Comment.Metadata>
-                <div>Yesterday at 12:30AM</div>
-              </Comment.Metadata>
-              <Comment.Text>
-                <p>This has been very useful for my research. Thanks as well!</p>
-              </Comment.Text>
-              <Comment.Actions>
-                <Comment.Action>Reply</Comment.Action>
-              </Comment.Actions>
-            </Comment.Content>
-            <Comment.Group>
-              <Comment>
-                <Comment.Avatar src='/images/avatar/small/jenny.jpg' />
-                <Comment.Content>
-                  <Comment.Author as='a'>Jenny Hess</Comment.Author>
-                  <Comment.Metadata>
-                    <div>Just now</div>
-                  </Comment.Metadata>
-                  <Comment.Text>Elliot you are always so right :)</Comment.Text>
-                  <Comment.Actions>
-                    <Comment.Action>Reply</Comment.Action>
-                  </Comment.Actions>
-                </Comment.Content>
-              </Comment>
-            </Comment.Group>
-          </Comment>
-
-          <Comment>
-            <Comment.Avatar src='/images/avatar/small/joe.jpg' />
-            <Comment.Content>
-              <Comment.Author as='a'>Joe Henderson</Comment.Author>
-              <Comment.Metadata>
-                <div>5 days ago</div>
-              </Comment.Metadata>
-              <Comment.Text>Dude, this is awesome. Thanks so much</Comment.Text>
-              <Comment.Actions>
-                <Comment.Action>Reply</Comment.Action>
-              </Comment.Actions>
-            </Comment.Content>
-          </Comment>
-
-          <Form reply>
-            <Form.TextArea />
-            <Button content='Add Reply' labelPosition='left' icon='edit' primary />
-          </Form>
-        </Comment.Group>
-      </div >
+        {/* <Image src={movie.image} responsive />; */}
+      </div>
     )
   }
 };
 
 const mapStateToProps = state => {
-  const { movies } = state.movies;
+  const { movies, movieRecommend } = state.movies;
   return {
-    movies
+    movies,
+    movieRecommend
   }
 }
 
