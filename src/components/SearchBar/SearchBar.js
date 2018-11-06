@@ -5,6 +5,7 @@ import { fetchMovies } from '../../actions/movies'
 import Select from 'react-select';
 import SearchFilter from './SearchFilter';
 import { Search, Grid, Header, Segment } from 'semantic-ui-react'
+import history from '../../history/history';
 
 import './SearchBar.css';
 
@@ -45,6 +46,7 @@ class SearchBar extends Component {
 
   handleResultSelect(e, { result }) {
     console.log(result);
+    history.push(`/movieDetail/${result.movie_id}`)
     this.setState({ value: result.title })
   }
 

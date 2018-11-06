@@ -53,20 +53,19 @@ export const signupUser = (newUser) => {
 
 export const signinUser = ({ email, password }) => {
   return dispatch => {
-    dispatch(authLoading('loading'));
+    dispatch(authLoading('true'));
     axios.post(`${ROOT_URL}/signin`, { email, password })
       .then(res => {
         console.log(res.data);
-        dispatch(authLoading('success'));
         localStorage.setItem('token', res.data.token);
         dispatch(authUser(res.data.user));
-        dispatch(authLoading(''));
+        dispatch(authLoading('false'));
         history.push('/')
       })
       .catch(err => {
         // console.log(err.response.data);
         dispatch(authError(err.response.data));
-        dispatch(authLoading(''));
+        dispatch(authLoading('false'));
       })
   }
 }
