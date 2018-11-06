@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_MOVIES } from './actionTypes';
+import { GET_MOVIES, GET_MOVIE_RECOMMEND } from './actionTypes';
 import { showLoading, hideLoading } from 'react-redux-loading-bar'
 
 export function getMovies(text) {
@@ -44,3 +44,20 @@ export const fetchMovies = () => {
       })
   }
 }
+
+export const fetchMovieRecommend = movie_id => {
+  return dispatch => {
+    // dispatch(showLoading());
+    axios.get('http://localhost:5000/movies/recommend', {
+      params: { movie_id }
+    })
+      .then(res => {
+        console.log(res);
+        // dispatch(setMovies(res.data));
+        // dispatch(hideLoading());
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
+} 

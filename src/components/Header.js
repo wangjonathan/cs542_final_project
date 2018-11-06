@@ -14,22 +14,29 @@ import {
   DropdownButton,
   Image
 } from 'react-bootstrap'
+import { Search, Grid, Header, Segment } from 'semantic-ui-react'
 import { LinkContainer } from 'react-router-bootstrap';
-import SearchBar from '@opuscapita/react-searchbar';
+import SearchBar from './SearchBar/SearchBar';
 
 import { signoutUser } from '..//actions/auth';
 import { fetchMovies } from '../actions/movies';
 import './SearchBar/SearchBar.css';
 import Logo from '../../image/popcorn.png';
-class Header extends Component {
+
+class HeaderBar extends Component {
   constructor(props) {
     super(props);
 
     this.toggle = this.toggle.bind(this);
     this.onChangeDropdown = this.onChangeDropdown.bind(this);
+    this.handleResultSelect = this.handleResultSelect.bind(this);
+    this.handleSearchChange = this.handleSearchChange.bind(this);
     this.state = {
       isOpen: false,
-      activeDropdown: 'Search by...'
+      activeDropdown: 'Search by...',
+      "isLoading": false,
+      "results": [],
+      "value": ""
     };
   }
 
@@ -43,8 +50,35 @@ class Header extends Component {
     this.setState({ activeDropdown: evt })
   }
 
+  resetComponent() {
+    this.setState({ isLoading: false, results: [], value: '' })
+  }
+
+  handleResultSelect(e, { result }) {
+    console.log(result);
+    this.setState({ value: result.title })
+  }
+
+  handleSearchChange(e, { value }) {
+    console.log(value);
+    this.setState({ isLoading: true, value })
+
+    setTimeout(() => {
+      if (this.state.value.length < 1) return this.resetComponent()
+
+      // const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
+      // const isMatch = result => re.test(result.title)
+
+      this.setState({
+        isLoading: false,
+        results: source,
+      })
+    }, 300)
+  }
+
   render() {
-    const { authenticated, user } = this.props;
+    const { authenticated, user, fetchMovies } = this.props;
+    const { isLoading, value, results } = this.state;
     return (
       <div>
         <Navbar>
@@ -53,15 +87,23 @@ class Header extends Component {
           </Navbar.Header>
           <Navbar.Header>
             <Navbar.Brand>
-              <Link to="/movieList">Popcorn Review</Link>
+              <Link to="/">Popcorn Review</Link>
             </Navbar.Brand>
           </Navbar.Header>
           <Navbar.Collapse>
             <Navbar.Form pullLeft>
-              <SearchBar
-                onSearch={this.props.fetchData}
+              {/* <SearchBar
+                onSearch={this.props.fetchMovies}
                 dynamicSearchStartsFrom={0}
-              />
+              /> */}
+              {/* <Search
+                loading={isLoading}
+                onResultSelect={this.handleResultSelect}
+                onSearchChange={this.handleSearchChange}
+                results={results}
+                value={value}
+              /> */}
+              <SearchBar />
 
             </Navbar.Form>
             <Nav>
@@ -77,8 +119,8 @@ class Header extends Component {
                   Signed in as: {user.username}
                 </NavItem>
                 <LinkContainer to="/signout">
-                <NavItem onClick={() => { this.props.signoutUser() }}>
-                  Sign out
+                  <NavItem onClick={() => { this.props.signoutUser() }}>
+                    Sign out
                 </NavItem>
                 </LinkContainer>
               </Nav>
@@ -114,7 +156,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchData: () => {
+    fetchMovies: () => {
       dispatch(fetchMovies());
     },
     signoutUser: () => {
@@ -123,4 +165,4 @@ const mapDispatchToProps = dispatch => {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(HeaderBar);

@@ -1,21 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import ProgressButton from 'react-progress-button'
-import '../../../node_modules/react-progress-button/react-progress-button.css';
-import {
-  FormGroup,
-  ControlLabel,
-  FormControl,
-  Button,
-  Alert,
-  Radio,
-  PageHeader
-} from 'react-bootstrap';
 import Select from 'react-select'
 import Moment from 'moment'
 import momentLocalizer from 'react-widgets-moment';
 import { DateTimePicker } from 'react-widgets';
+import {
+  Header,
+  Button,
+  Checkbox,
+  Form,
+  Dropdown,
+  Radio,
+  Icon
+} from 'semantic-ui-react'
 
 import { signinUser, signupUser } from '../../actions/auth';
 
@@ -41,25 +39,24 @@ class SignUpForm extends Component {
       dob: Moment(new Date()).format('MM/DD/YYYY'),
       fav_genres: [],
       gender: '',
-      filterOptions: [
-        { value: 'Romance', label: 'Romance' },
-        { value: 'Mystery', label: 'Mystery' },
-        { value: 'Musical', label: 'Musical' },
-        { value: 'Fantasy', label: 'Fantasy' },
-        { value: 'Drama', label: 'Drama' },
-        { value: 'Horror', label: 'Horror' },
-        { value: 'Biography', label: 'Biography' },
-        { value: 'Action', label: 'Action' },
-        { value: 'Thriller', label: 'Thriller' },
-        { value: 'Sci-Fi', label: 'Sci-Fi' },
-        { value: 'Comedy', label: 'Comedy' },
-        { value: 'Adventure', label: 'Adventure' },
-        { value: 'War', label: 'War' },
-        { value: 'Family', label: 'Family' },
-        { value: 'Animation', label: 'Animation' },
-        { value: 'Crime', label: 'Crime' },
-      ],
-      buttonState: ''
+      GenreOptions: [
+        { value: 'Romance', key: 'Romance', text: 'Romance' },
+        { value: 'Mystery', key: 'Mystery', text: 'Mystery' },
+        { value: 'Musical', key: 'Musical', text: 'Musical' },
+        { value: 'Fantasy', key: 'Fantasy', text: 'Fantasy' },
+        { value: 'Drama', key: 'Drama', text: 'Drama' },
+        { value: 'Horror', key: 'Horror', text: 'Horror' },
+        { value: 'Biography', key: 'Biography', text: 'Biography' },
+        { value: 'Action', key: 'Action', text: 'Action' },
+        { value: 'Thriller', key: 'Thriller', text: 'Thriller' },
+        { value: 'Sci-Fi', key: 'Sci-Fi', text: 'Sci-Fi' },
+        { value: 'Comedy', key: 'Comedy', text: 'Comedy' },
+        { value: 'Adventure', key: 'Adventure', text: 'Adventure' },
+        { value: 'War', key: 'War', text: 'War' },
+        { value: 'Family', key: 'Family', text: 'Family' },
+        { value: 'Animation', key: 'Animation', text: 'Animation' },
+        { value: 'Crime', key: 'Crime', text: 'Crime' },
+      ]
     }
   }
 
@@ -87,9 +84,8 @@ class SignUpForm extends Component {
     }));
   }
 
-  handleGenreChange(selectedGenre) {
-    const fav_genres = selectedGenre.map(genre => genre.value);
-    this.setState(Object.assign({}, this.state, { fav_genres }))
+  handleGenreChange(selectedGenre, { value }) {
+    this.setState(Object.assign({}, this.state, { fav_genres: value }))
   }
 
   handleDateChange(selectedDate) {
@@ -97,9 +93,8 @@ class SignUpForm extends Component {
     this.setState(Object.assign({}, this.state, { dob }));
   }
 
-  handleGenderChange(e) {
-    const gender = e.target.value;
-    this.setState(Object.assign({}, this.state, { gender }));
+  handleGenderChange(e, { value }) {
+    this.setState(Object.assign({}, this.state, { gender: value }));
   }
 
   handleSubmit(e) {
@@ -126,56 +121,62 @@ class SignUpForm extends Component {
     const { error } = this.props;
     return (
       <div className='container'>
-        <PageHeader>
+        <Header as='h3' dividing>
           Sign up
-        </PageHeader>
-        <form className='form'>
-          <FormGroup>
-            <ControlLabel>Username</ControlLabel>
-            <FormControl type="text" onChange={this.handelUsernameChange} />
-          </FormGroup>
-          <FormGroup validationState={this.getValidationState()}>
-            <ControlLabel>Email</ControlLabel>
-            <FormControl type="text" onChange={this.handelEmailChange} />
-          </FormGroup>
-          {!(this.getValidationState() === 'error') ||
-            <Alert bsStyle="danger">
-              <strong>{error}</strong>
-            </Alert>
-          }
-
-          <FormGroup>
-            <ControlLabel>Password</ControlLabel>
-            <FormControl type="password" onChange={this.handelPasswordChange} />
-          </FormGroup>
-          <FormGroup controlId="formControlsSelectMultiple">
-            <ControlLabel>Favorite Genre - choose at least one</ControlLabel>
-            <Select
-              className='Select'
-              isMulti
-              options={filterOptions}
-              onChange={this.handleGenreChange}
-            />
-          </FormGroup>
-          <FormGroup>
-            <ControlLabel>Date of Birth</ControlLabel>
+        </Header>
+        <Form loading={this.props.isWaiting === 'true'}>
+          <Form.Field>
+            <label>Username</label>
+            <input placeholder='Username' onChange={this.handelUsernameChange} />
+          </Form.Field>
+          <Form.Field>
+            <label>Email</label>
+            <input placeholder='Email' onChange={this.handelEmailChange} />
+          </Form.Field>
+          <Form.Field>
+            <label>password</label>
+            <input placeholder='Password' type='password' onChange={this.handelPasswordChange} />
+          </Form.Field>
+          <Form.Field>
+            <label>Favorite Genre</label>
+            <Dropdown placeholder='Select Genre' fluid multiple search selection options={this.state.GenreOptions} onChange={this.handleGenreChange} />
+          </Form.Field>
+          <Form.Field>
+            <label>Date of Birth</label>
             <DateTimePicker
               defaultValue={new Date()}
               time={false}
               format='MM/DD/YYYY'
               onChange={this.handleDateChange}
             />
-          </FormGroup>
-          <FormGroup>
-            <ControlLabel>Gender </ControlLabel>{'  '}
-            <Radio inline name='radioGroup' onChange={this.handleGenderChange} value='M'>Male</Radio>
-            <Radio inline name='radioGroup' onChange={this.handleGenderChange} value='F'>Female</Radio>
-          </FormGroup>
-        </form>
-        {/* <Button bsStyle='primary' onClick={this.handleSubmit}>Sign up</Button> */}
-        <ProgressButton className='submitBtn' onClick={this.handleSubmit} state={this.props.isWaiting}>
-          Submit
-        </ProgressButton>
+          </Form.Field>
+          <Form.Field>
+            <label>Gender</label>
+            <Radio
+              label='Male'
+              name='radioGroup'
+              value='m'
+              checked={this.state.gender === 'm'}
+              onChange={this.handleGenderChange}
+            />
+            <Radio
+              label='Female'
+              name='radioGroup'
+              value='f'
+              checked={this.state.gender === 'f'}
+              onChange={this.handleGenderChange}
+            />
+          </Form.Field>
+          <Form.Field>
+            <Checkbox label='I agree to the Terms and Conditions' />
+          </Form.Field>
+          <Button animated onClick={this.handleSubmit}>
+            <Button.Content visible>Submit</Button.Content>
+            <Button.Content hidden>
+              <Icon name='hand point up outline' />
+            </Button.Content>
+          </Button>
+        </Form>
       </div>
     )
   }

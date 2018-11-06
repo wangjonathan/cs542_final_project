@@ -1,8 +1,8 @@
-.oc-search-bar {
-  width: 300px;
-}
-
 #Logo {
   width: 48px;
   height: 48px;
+}
+
+.ui.input {
+  width: 300px;
 }

@@ -35,19 +35,18 @@ export function authLoading(isWaiting) {
 
 export const signupUser = (newUser) => {
   return dispatch => {
-    dispatch(authLoading('loading'));
+    dispatch(authLoading('true'));
     axios.post(`${ROOT_URL}/signup`, newUser)
       .then(res => {
-        dispatch(authLoading('success'));
         localStorage.setItem('token', res.data.token);
         dispatch(authUser(res.data.user));
-        dispatch(authLoading(''));
+        dispatch(authLoading('false'));
         history.push('/')
       })
       .catch(err => {
         console.log(err);
-        // dispatch(authError(err.response.data.error));
-        dispatch(authLoading('success'));
+        dispatch(authError(err.response.data.error));
+        dispatch(authLoading('false'));
       })
   }
 }
@@ -57,6 +56,7 @@ export const signinUser = ({ email, password }) => {
     dispatch(authLoading('loading'));
     axios.post(`${ROOT_URL}/signin`, { email, password })
       .then(res => {
+        console.log(res.data);
         dispatch(authLoading('success'));
         localStorage.setItem('token', res.data.token);
         dispatch(authUser(res.data.user));

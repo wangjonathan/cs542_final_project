@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import ProgressButton from 'react-progress-button'
 import {
-  FormGroup,
-  ControlLabel,
-  FormControl,
+  Header,
   Button,
-  Alert,
-  PageHeader
-} from 'react-bootstrap';
+  Checkbox,
+  Form,
+  Dropdown,
+  Radio
+} from 'semantic-ui-react'
 
 import { signinUser } from '../../actions/auth';
 
@@ -49,31 +48,23 @@ class SignInForm extends Component {
 
   render() {
     const { filterOptions } = this.state;
-    const { error} = this.props;
+    const { error } = this.props;
     return (
       <div className='container'>
-      <PageHeader>
+        <Header as='h3' dividing>
           Sign in
-        </PageHeader>
-        <form className='form'>
-          <FormGroup>
-            <ControlLabel>Email</ControlLabel>
-            <FormControl type="text" onChange={this.handelEmailChange} />
-          </FormGroup>
-          <FormGroup>
-            <ControlLabel>Password</ControlLabel>
-            <FormControl type="password" onChange={this.handelPasswordChange} />
-          </FormGroup>
-        </form>
-        {/* <Button bsStyle='primary' onClick={this.handleSubmit}>Sign in</Button> */}
-        {!error ||
-          <Alert bsStyle="danger">
-            <strong>{error}</strong>
-          </Alert>
-        }
-        <ProgressButton className='submitBtn' onClick={this.handleSubmit} state={this.props.isWaiting}>
-          Submit
-        </ProgressButton>
+        </Header>
+        <Form loading={this.props.isWaiting === 'true'}>
+          <Form.Field>
+            <label>Email</label>
+            <input placeholder='Email' onChange={this.handelEmailChange} />
+          </Form.Field>
+          <Form.Field>
+            <label>password</label>
+            <input placeholder='Password' type='password' onChange={this.handelPasswordChange} />
+          </Form.Field>
+          <Button type='submit' onClick={this.handleSubmit}>Submit</Button>
+        </Form>
       </div>
     )
   }

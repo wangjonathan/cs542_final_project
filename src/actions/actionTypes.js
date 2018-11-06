@@ -1,4 +1,5 @@
 export const GET_MOVIES = 'GET_MOVIES';
+export const GET_MOVIE_RECOMMEND = 'GET_MOVIE_RECOMMEND';
 
 export const TOGGLE_SPINNER = 'TOGGLE_SPINNER';
 

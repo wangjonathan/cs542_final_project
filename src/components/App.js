@@ -3,6 +3,7 @@ import { BrowserRouter, Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createBrowserHistory } from 'history'
 
+import LikesRank from './LikesRank/LikesRank';
 import Header from './Header';
 import Modal from './Modal/Modal';
 import SearchBar from './SearchBar/SearchBar';
@@ -15,6 +16,7 @@ import history from '../history/history';
 const Home = () => (
   <div>
     Home
+    <LikesRank />
   </div>
 );
 

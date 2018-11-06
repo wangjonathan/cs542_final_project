@@ -1,7 +1,8 @@
 import React from 'react';
 import { Media } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import StarRatingComponent from 'react-star-rating-component';
+import { Item } from 'semantic-ui-react'
+import { Rating } from 'semantic-ui-react'
 
 const MovieListItem = props => (
   <div>
@@ -14,16 +15,12 @@ const MovieListItem = props => (
           <Link to={`/movieDetail/${props.movie.movie_id}`}>{props.movie.title}</Link>
         </Media.Heading>
         <p>{props.movie.director}</p>
-        <StarRatingComponent
-          name="rate2"
-          editing={false}
-          starCount={10}
-          value={Number(props.movie.rating)}
-        />
-        {props.movie.rating}/10
+        <Rating icon='star' defaultRating={Number(props.movie.rating)} maxRating={10} disabled />
+        {/* {props.movie.rating}/10 */}
 
       </Media.Body>
     </Media>
+    {/* <Item.Group items={items} /> */}
   </div>
 );
 
