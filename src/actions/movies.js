@@ -52,6 +52,25 @@ export const fetchMovies = () => {
   }
 }
 
+export const fetchMoviesByDirector = (director) => {
+  return dispatch => {
+    dispatch(showLoading());
+    axios.get('https://cs542-final-project-server.herokuapp.com/searchdirector', {
+      params: {
+        director
+      }
+    })
+      .then(res => {
+        console.log(res);
+        dispatch(setMovies(res.data));
+        dispatch(hideLoading());
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
+}
+
 export const fetchMovieRecommend = movie_id => {
   return dispatch => {
     // dispatch(showLoading());

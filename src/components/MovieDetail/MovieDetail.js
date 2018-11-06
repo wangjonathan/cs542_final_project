@@ -16,7 +16,8 @@ import {
   Label,
   Icon,
   Tab,
-  Item
+  Item,
+  Rating
 } from 'semantic-ui-react';
 
 import Review from './Review/Review';
@@ -67,17 +68,17 @@ class MovieDetail extends Component {
           <Header as='h1' dividing>
             {movie.title}
             <small>
-              <Badge>{movie.rating}/10</Badge>
+            <Rating icon='star' defaultRating={1} /><Badge>{movie.rating}/10</Badge>
             </small>
-            <Button as='div' labelPosition='right' size='tiny'>
+            {/* <Button as='div' labelPosition='right' size='tiny'>
               <Button color='red'>
                 <Icon name='heart' />
                 Like
-          </Button>
+            </Button>
               <Label as='a' basic color='red' pointing='left'>
                 2,048
              </Label>
-            </Button>
+            </Button> */}
 
           </Header>
           <Item.Group relaxed>

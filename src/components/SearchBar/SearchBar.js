@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
 import _ from 'lodash'
 import { connect } from 'react-redux';
-import { fetchMovies } from '../../actions/movies'
+import { fetchMovies, fetchMoviesByDirector } from '../../actions/movies'
 import Select from 'react-select';
 import SearchFilter from './SearchFilter';
-import { Search, Grid, Header, Segment } from 'semantic-ui-react'
+import {
+  Search,
+  Grid,
+  Header,
+  Segment,
+  Dropdown
+} from 'semantic-ui-react'
 import history from '../../history/history';
 
 import './SearchBar.css';
@@ -33,6 +39,7 @@ class SearchBar extends Component {
 
   componentDidMount() {
     this.props.fetchMovies();
+    // this.props.fetchMoviesByDirector();
   }
 
   handleChange(selectedOption) {
@@ -52,13 +59,26 @@ class SearchBar extends Component {
 
   handleSearchChange(e, { value }) {
     // console.log(value);
+    const { searchBy } = this.props;
+
     this.setState({ isLoading: true, value })
 
     setTimeout(() => {
       if (this.state.value.length < 1) return this.resetComponent()
 
       const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
-      const isMatch = result => re.test(result.title)
+      if (searchBy === 'actor') {
+        var isMatch = false;
+
+        
+        console.log(isMatch);
+        if (isMatch) return;
+      } else {
+        var isMatch = result => {
+          return re.test(result[searchBy])
+        }
+      }
+
 
       this.setState({
         isLoading: false,
@@ -72,7 +92,8 @@ class SearchBar extends Component {
 
   render() {
     const { options, isLoading, value, results } = this.state;
-    const { movies } = this.props;
+    const { movies, searchBy } = this.props;
+    // console.log(searchBy);
     return (
       <div >
         <Search
@@ -104,6 +125,9 @@ const mapDispatchToProps = dispatch => {
   return {
     fetchMovies: () => {
       dispatch(fetchMovies());
+    },
+    fetchMoviesByDirector: director => {
+      dispatch(fetchMoviesByDirector(director))
     }
   };
 }

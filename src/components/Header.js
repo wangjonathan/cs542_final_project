@@ -31,12 +31,9 @@ class HeaderBar extends Component {
 
     // this.toggle = this.toggle.bind(this);
     this.onChangeDropdown = this.onChangeDropdown.bind(this);
-    this.handleResultSelect = this.handleResultSelect.bind(this);
-    this.handleSearchChange = this.handleSearchChange.bind(this);
-    this.handeleDropdownChange = this.handeleDropdownChange.bind(this);
     this.state = {
       // isOpen: false,
-      activeDropdown: 'Search by...',
+      activeDropdown: 'title',
       isLoading: false,
       results: [],
       value: "",
@@ -53,32 +50,6 @@ class HeaderBar extends Component {
     this.setState({ activeDropdown: evt })
   }
 
-  resetComponent() {
-    this.setState({ isLoading: false, results: [], value: '' })
-  }
-
-  handleResultSelect(e, { result }) {
-    console.log(result);
-    this.setState({ value: result.title })
-  }
-
-  handleSearchChange(e, { value }) {
-    console.log(value);
-    this.setState({ isLoading: true, value })
-
-    setTimeout(() => {
-      if (this.state.value.length < 1) return this.resetComponent()
-
-      // const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
-      // const isMatch = result => re.test(result.title)
-
-      this.setState({
-        isLoading: false,
-        results: source,
-      })
-    }, 300)
-  }
-
   handeleDropdownChange(e, { value }) {
     switch (value) {
       case 'signout': {
@@ -86,7 +57,7 @@ class HeaderBar extends Component {
         this.props.signoutUser();
       }
     }
-    
+
   }
 
   render() {
@@ -123,25 +94,13 @@ class HeaderBar extends Component {
           </Navbar.Header>
           <Navbar.Collapse>
             <Navbar.Form pullLeft>
-              {/* <SearchBar
-                onSearch={this.props.fetchMovies}
-                dynamicSearchStartsFrom={0}
-              /> */}
-              {/* <Search
-                loading={isLoading}
-                onResultSelect={this.handleResultSelect}
-                onSearchChange={this.handleSearchChange}
-                results={results}
-                value={value}
-              /> */}
-              <SearchBar />
-
+              <SearchBar searchBy={this.state.activeDropdown} />
             </Navbar.Form>
             <Nav>
               <NavDropdown eventKey={3} title={this.state.activeDropdown} id="basic-nav-dropdown" onSelect={this.onChangeDropdown}>
-                <MenuItem eventKey='Title'>Title</MenuItem>
-                <MenuItem eventKey='Actor'>Actor</MenuItem>
-                <MenuItem eventKey='Director'>Director</MenuItem>
+                <MenuItem eventKey='title'>Title</MenuItem>
+                <MenuItem eventKey='actor'>Actor</MenuItem>
+                <MenuItem eventKey='director'>Director</MenuItem>
               </NavDropdown>
             </Nav>
             {authenticated ?

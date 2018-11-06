@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import Select from 'react-select'
 import Moment from 'moment'
@@ -12,7 +13,8 @@ import {
   Form,
   Dropdown,
   Radio,
-  Icon
+  Icon,
+  Message
 } from 'semantic-ui-react'
 
 import { signinUser, signupUser } from '../../actions/auth';
@@ -121,10 +123,15 @@ class SignUpForm extends Component {
     const { error } = this.props;
     return (
       <div className='container'>
-        <Header as='h3' dividing>
+        {/* <Header as='h3' dividing>
           Sign up
-        </Header>
-        <Form loading={this.props.isWaiting === 'true'}>
+        </Header> */}
+        <Message
+          attached
+          header='Welcome to our site!'
+          content='Fill out the form below to sign-up for a new account'
+        />
+        <Form className='attached fluid segment' loading={this.props.isWaiting === 'true'}>
           <Form.Field>
             <label>Username</label>
             <input placeholder='Username' onChange={this.handelUsernameChange} />
@@ -177,6 +184,10 @@ class SignUpForm extends Component {
             </Button.Content>
           </Button>
         </Form>
+        <Message attached='bottom' success>
+          <Icon name='check' />
+          Already signed up?&nbsp;<Link to='/signin'>Login here</Link>&nbsp;instead.
+        </Message>
       </div>
     )
   }

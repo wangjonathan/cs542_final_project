@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import {
   Header,
@@ -8,6 +9,7 @@ import {
   Form,
   Dropdown,
   Radio,
+  Icon,
   Message
 } from 'semantic-ui-react'
 
@@ -52,10 +54,14 @@ class SignInForm extends Component {
     const { error } = this.props;
     return (
       <div className='container'>
-        <Header as='h3' dividing>
+        {/* <Header as='h3' dividing>
           Sign in
-        </Header>
-        <Form loading={this.props.isWaiting === 'true'}>
+        </Header> */}
+        <Message
+          attached
+          header='Login'
+        />
+        <Form className='attached fluid segment' loading={this.props.isWaiting === 'true'}>
           <Form.Field>
             <label>Email</label>
             <input placeholder='Email' onChange={this.handelEmailChange} />
@@ -66,6 +72,10 @@ class SignInForm extends Component {
           </Form.Field>
           <Button type='submit' onClick={this.handleSubmit}>Submit</Button>
         </Form>
+        <Message attached='bottom' warning>
+          <Icon name='help' />
+          Doesn't have account yet?&nbsp;<Link to='/signup'>Sign up here</Link>&nbsp;instead.
+        </Message>
         {!error || <Message
               error
               header='Action Forbidden'
