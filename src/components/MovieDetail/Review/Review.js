@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import {
   Divider,
   Button,
@@ -11,6 +12,7 @@ import {
 } from 'semantic-ui-react';
 
 const Review = props => {
+  const { authenticated } = props;
   return (
     <div>
       <Comment.Group>
@@ -72,14 +74,29 @@ const Review = props => {
             </Comment.Actions>
           </Comment.Content>
         </Comment>
+        {!authenticated ||
+          <Form reply>
+            <Form.TextArea />
+            <Button content='Add Reply' labelPosition='left' icon='edit' primary />
+          </Form>
+        }
 
-        <Form reply>
-          <Form.TextArea />
-          <Button content='Add Reply' labelPosition='left' icon='edit' primary />
-        </Form>
       </Comment.Group>
     </div>
   );
 };
 
-export default Review;
+const mapStateToProps = state => {
+  const { auth } = state;
+  return {
+    authenticated: auth.authenticated
+  }
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Review);

@@ -2,8 +2,8 @@ import React from 'react';
 import { BrowserRouter, Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createBrowserHistory } from 'history'
-import { Carousel } from 'react-responsive-carousel';
-import LikesRank from './LikesRank/LikesRank';
+import Slider from "react-slick";
+import Home from './Home/Home';
 import Header from './Header';
 import Modal from './Modal/Modal';
 import SearchBar from './SearchBar/SearchBar';
@@ -13,12 +13,6 @@ import SignUpForm from './SignUpForm/SignUpForm';
 import SignInForm from './SignInForm/SigninForm';
 import history from '../history/history';
 
-const Home = () => (
-  <div>
-    Home
-    {/* <LikesRank /> */}
-  </div>
-);
 
 const Signout = () => (
   <div>

@@ -17,7 +17,8 @@ import {
   Icon,
   Tab,
   Item,
-  Rating
+  Rating,
+  List
 } from 'semantic-ui-react';
 
 import Review from './Review/Review';
@@ -68,7 +69,7 @@ class MovieDetail extends Component {
           <Header as='h1' dividing>
             {movie.title}
             <small>
-            <Rating icon='star' defaultRating={1} /><Badge>{movie.rating}/10</Badge>
+              <Rating icon='star' defaultRating={1} /><Badge>{movie.rating}/10</Badge>
             </small>
             {/* <Button as='div' labelPosition='right' size='tiny'>
               <Button color='red'>
@@ -86,10 +87,12 @@ class MovieDetail extends Component {
               <Item.Image src={movie.image} />
 
               <Item.Content floated='right' verticalAlign='top'>
-                <Item.Header>{movie.title}</Item.Header>
+                {/* <Item.Header>{movie.title}</Item.Header> */}
                 <Item.Meta>Genre</Item.Meta>
                 <Item.Description>
-                  {movie.genre.map(actor => <span key={actor.genre}>{actor.genre}<br /></span>)}
+                  <List celled horizontal>
+                    {movie.genre.map(actor => <List.Item key={actor.genre}>{actor.genre}</List.Item>)}
+                  </List>
                 </Item.Description>
                 <Item.Meta>Director</Item.Meta>
                 <Item.Description>
@@ -97,7 +100,9 @@ class MovieDetail extends Component {
                 </Item.Description>
                 <Item.Meta>Actor</Item.Meta>
                 <Item.Description>
-                  {movie.actor.map(actor => <span key={actor.actor_name}>{actor.actor_name}<br /></span>)}
+                  <List celled horizontal>
+                    {movie.actor.map(actor => <List.Item key={actor.actor_name}>{actor.actor_name}<br /></List.Item>)}
+                  </List>
                 </Item.Description>
                 <Item.Meta>Description</Item.Meta>
                 <Item.Description>

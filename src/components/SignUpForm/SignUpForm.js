@@ -177,7 +177,7 @@ class SignUpForm extends Component {
           <Form.Field>
             <Checkbox label='I agree to the Terms and Conditions' />
           </Form.Field>
-          <Button animated onClick={this.handleSubmit}>
+          <Button primary animated onClick={this.handleSubmit}>
             <Button.Content visible>Submit</Button.Content>
             <Button.Content hidden>
               <Icon name='hand point up outline' />

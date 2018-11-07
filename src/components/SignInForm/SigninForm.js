@@ -70,7 +70,7 @@ class SignInForm extends Component {
             <label>password</label>
             <input placeholder='Password' type='password' onChange={this.handelPasswordChange} />
           </Form.Field>
-          <Button type='submit' onClick={this.handleSubmit}>Submit</Button>
+          <Button primary type='submit' onClick={this.handleSubmit}>Submit</Button>
         </Form>
         <Message attached='bottom' warning>
           <Icon name='help' />

@@ -1,13 +1,24 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Item } from 'semantic-ui-react'
+import { Item, Grid, Image } from 'semantic-ui-react'
 
 const Recommend = props => {
   // console.log('Recommend', props.movieRecommend);
   const { movieRecommend } = props;
   return (
     <div>
-      <Item.Group relaxed='very'>
+      <Grid>
+        {!movieRecommend || movieRecommend.map(movie => (
+          <Grid.Column key={movie.movie_id} width={3}>
+            <Image src={movie.image} />
+            <Link to={`/movieDetail/${movie.movie_id}`}>
+              {movie.title}
+            </Link>
+          </Grid.Column>
+        ))
+        }
+      </Grid>
+      {/* <Item.Group relaxed='very'>
         {!movieRecommend || movieRecommend.map(movie => (
           <Item>
             <Item.Image size='tiny' src={movie.image} />
@@ -19,7 +30,7 @@ const Recommend = props => {
             </Item.Content>
           </Item>
         ))}
-      </Item.Group>
+      </Item.Group> */}
     </div>
   )
 };

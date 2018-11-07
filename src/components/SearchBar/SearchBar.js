@@ -101,6 +101,7 @@ class SearchBar extends Component {
           loading={isLoading}
           onResultSelect={this.handleResultSelect}
           onSearchChange={this.handleSearchChange}
+          onFocus={this.handleSearchChange}
           results={results}
           value={value}
         />

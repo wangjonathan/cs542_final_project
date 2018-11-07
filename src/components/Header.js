@@ -31,6 +31,7 @@ class HeaderBar extends Component {
 
     // this.toggle = this.toggle.bind(this);
     this.onChangeDropdown = this.onChangeDropdown.bind(this);
+    this.handeleDropdownChange = this.handeleDropdownChange.bind(this);
     this.state = {
       // isOpen: false,
       activeDropdown: 'title',
@@ -53,8 +54,8 @@ class HeaderBar extends Component {
   handeleDropdownChange(e, { value }) {
     switch (value) {
       case 'signout': {
-        history.push(`/${value}`);
         this.props.signoutUser();
+        history.push(`/${value}`);
       }
     }
 
