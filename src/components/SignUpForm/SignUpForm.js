@@ -22,6 +22,7 @@ import { signinUser, signupUser } from '../../actions/auth';
 Moment.locale('en')
 momentLocalizer();
 
+import 'react-widgets/dist/css/react-widgets.css';
 import './form.css';
 class SignUpForm extends Component {
   constructor(props) {
@@ -123,9 +124,6 @@ class SignUpForm extends Component {
     const { error } = this.props;
     return (
       <div className='container'>
-        {/* <Header as='h3' dividing>
-          Sign up
-        </Header> */}
         <Message
           attached
           header='Welcome to our site!'

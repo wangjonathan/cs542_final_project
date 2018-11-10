@@ -2,23 +2,16 @@ import React from 'react';
 import { BrowserRouter, Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createBrowserHistory } from 'history'
-import Slider from "react-slick";
 import Home from './Home/Home';
 import Header from './Header';
-import Modal from './Modal/Modal';
 import SearchBar from './SearchBar/SearchBar';
 import MovieDetail from './MovieDetail/MovieDetail';
 import MovieList from './MovieList/MovieList';
 import SignUpForm from './SignUpForm/SignUpForm';
 import SignInForm from './SignInForm/SigninForm';
 import history from '../history/history';
-
-
-const Signout = () => (
-  <div>
-    Signout successfully!!!!
-  </div>
-);
+import CustomizedSearch from './AdvancedSearch';
+import Signout from './Signout';
 
 const App = () => {
   return (
@@ -33,6 +26,7 @@ const App = () => {
             <Route exact path='/signup' component={SignUpForm}></Route>
             <Route exact path='/signin' component={SignInForm}></Route>
             <Route exact path='/signout' component={Signout}></Route>
+            <Route exact path='/advancedSearch' component={CustomizedSearch}></Route>
           </Switch>
         </div>
 

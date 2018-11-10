@@ -24,3 +24,5 @@ public/bundle.js
 public/vendor*.js
 
 /config
+*.code-workspace
+src/components/__test__/

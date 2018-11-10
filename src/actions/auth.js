@@ -41,7 +41,7 @@ export const signupUser = (newUser) => {
         localStorage.setItem('token', res.data.token);
         dispatch(authUser(res.data.user));
         dispatch(authLoading('false'));
-        history.push('/')
+        history.push('/');
       })
       .catch(err => {
         console.log(err);
@@ -60,7 +60,8 @@ export const signinUser = ({ email, password }) => {
         localStorage.setItem('token', res.data.token);
         dispatch(authUser(res.data.user));
         dispatch(authLoading('false'));
-        history.push('/')
+        // history.push('/')
+        history.goBack();
       })
       .catch(err => {
         // console.log(err.response.data);

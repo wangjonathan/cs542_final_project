@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
+  Badge
+} from 'react-bootstrap';
+import {
   Divider,
   Button,
   Comment,
@@ -8,95 +11,53 @@ import {
   Header,
   Label,
   Icon,
-  Tab
+  Tab,
+  Rating,
+  TextArea
 } from 'semantic-ui-react';
 
 const Review = props => {
-  const { authenticated } = props;
+  const { user, authenticated, isLoading, reviews, review, rating } = props;
   return (
     <div>
       <Comment.Group>
-        <Comment>
-          <Comment.Avatar src='/images/avatar/small/matt.jpg' />
-          <Comment.Content>
-            <Comment.Author as='a'>Matt</Comment.Author>
-            <Comment.Metadata>
-              <div>Today at 5:42PM</div>
-            </Comment.Metadata>
-            <Comment.Text>How artistic!</Comment.Text>
-            <Comment.Actions>
-              <Comment.Action>Reply</Comment.Action>
-            </Comment.Actions>
-          </Comment.Content>
-        </Comment>
-
-        <Comment>
-          <Comment.Avatar src='/images/avatar/small/elliot.jpg' />
-          <Comment.Content>
-            <Comment.Author as='a'>Elliot Fu</Comment.Author>
-            <Comment.Metadata>
-              <div>Yesterday at 12:30AM</div>
-            </Comment.Metadata>
-            <Comment.Text>
-              <p>This has been very useful for my research. Thanks as well!</p>
-            </Comment.Text>
-            <Comment.Actions>
-              <Comment.Action>Reply</Comment.Action>
-            </Comment.Actions>
-          </Comment.Content>
-          <Comment.Group>
-            <Comment>
-              <Comment.Avatar src='/images/avatar/small/jenny.jpg' />
-              <Comment.Content>
-                <Comment.Author as='a'>Jenny Hess</Comment.Author>
-                <Comment.Metadata>
-                  <div>Just now</div>
-                </Comment.Metadata>
-                <Comment.Text>Elliot you are always so right</Comment.Text>
-                <Comment.Actions>
-                  <Comment.Action>Reply</Comment.Action>
-                </Comment.Actions>
-              </Comment.Content>
-            </Comment>
-          </Comment.Group>
-        </Comment>
-
-        <Comment>
-          <Comment.Avatar src='/images/avatar/small/joe.jpg' />
-          <Comment.Content>
-            <Comment.Author as='a'>Joe Henderson</Comment.Author>
-            <Comment.Metadata>
-              <div>5 days ago</div>
-            </Comment.Metadata>
-            <Comment.Text>Dude, this is awesome. Thanks so much</Comment.Text>
-            <Comment.Actions>
-              <Comment.Action>Reply</Comment.Action>
-            </Comment.Actions>
-          </Comment.Content>
-        </Comment>
+        {!reviews || reviews.map(review => (
+          <Comment>
+            <Comment.Content>
+              <Comment.Author as='a'><Icon name='user circle' />{review.username}</Comment.Author>
+              <Comment.Metadata>
+                <div>{review.date}</div>
+              </Comment.Metadata>
+              <Comment.Text><Rating icon='star' defaultRating={1} />{review.rating}</Comment.Text>
+              <Comment.Text>{review.review}</Comment.Text>
+              {reviews !== undefined && user !== undefined ?
+                (reviews.user_id === user.user_id ||
+                  <Comment.Actions>
+                    <Comment.Action>Edit</Comment.Action>
+                  </Comment.Actions>)
+                :
+                ""
+              }
+            </Comment.Content>
+          </Comment>
+        ))}
         {!authenticated ||
-          <Form reply>
-            <Form.TextArea />
-            <Button content='Add Reply' labelPosition='left' icon='edit' primary />
+          <Form reply loading={isLoading}>
+            <Form.Field>
+              <label>Your review</label>
+              <TextArea value={review} onChange={props.handleTextAreaChange} />
+            </Form.Field>
+            <Form.Field>
+              <label>Your rating</label>
+              <Rating icon='star' defaultRating={0} maxRating={10} rating={rating} onRate={props.handleRatingChange} />
+            </Form.Field>
+            <Button content='Add Reply' labelPosition='left' icon='edit' primary onClick={props.handleReviewSubmit} />
           </Form>
         }
 
       </Comment.Group>
-    </div>
+    </div >
   );
 };
 
-const mapStateToProps = state => {
-  const { auth } = state;
-  return {
-    authenticated: auth.authenticated
-  }
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-
-  }
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Review);
+export default Review;
