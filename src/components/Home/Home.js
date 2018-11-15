@@ -1,24 +1,40 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import {
   Segment,
   Image,
   Container,
   Grid,
   Header,
-  List,
-  Table
+  List
 } from 'semantic-ui-react'
 import { Link } from 'react-router-dom';
 import { Carousel } from 'react-bootstrap';
+import Recommend from '../MovieDetail/Recommend/Recommend';
 import MoviesRank from '../MoviesRank/MoviesRank';
 import Avengers from '../../../image/avengers-infinity-war-movie-poster-international.png';
 import GoG from '../../../image/guardians-of-the-galaxy-2.png';
+import { fetchMovieRecommendForUser } from '../../actions/movies';
 
 import './home.css';
 class Home extends Component {
 
+  componentDidMount() {
+    if (this.props.user)
+      this.props.fetchMovieRecommendForUser(this.props.user.user_id);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { authenticated } = this.props;
+    if (authenticated === true && prevProps.authenticated !== authenticated) {
+      const { user } = this.props;
+      this.props.fetchMovieRecommendForUser(user.user_id);
+    }
+
+  }
+
   render() {
-    var settings = {
+    const settings = {
       dots: true,
       infinite: true,
       speed: 500,
@@ -26,6 +42,7 @@ class Home extends Component {
       slidesToScroll: 1,
       // centerMode: true
     };
+    const { authenticated } = this.props;
     return (
       <div>
         <Container>
@@ -66,6 +83,16 @@ class Home extends Component {
               <Image src='/images/wireframe/media-paragraph.png' />
             </Grid.Column> */}
           </Grid>
+          {!authenticated ||
+            <div>
+              <Header attached='top'>
+                Recommend Movies Just for You
+              </Header>
+              <Segment attached>
+                <Recommend movieRecommend={this.props.userMovieRecommend} />
+              </Segment></div>
+          }
+
         </Container>
 
         {/* <Segment vertical style={{ padding: '5em 0em' }}>
@@ -107,4 +134,23 @@ class Home extends Component {
   }
 };
 
-export default Home;
+const mapStateToProps = state => {
+  const { movies, userMovieRecommend } = state.movies;
+  const { authenticated, user } = state.auth;
+  return {
+    movies,
+    userMovieRecommend,
+    user,
+    authenticated
+  }
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchMovieRecommendForUser(user_id) {
+      dispatch(fetchMovieRecommendForUser(user_id));
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

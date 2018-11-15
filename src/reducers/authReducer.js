@@ -1,6 +1,6 @@
 import { AUTH_USER, UNAUTH_USER, AUTH_ERR, AUTH_LOADING } from '../actions/actionTypes';
 
-export default (state = {}, action) => {
+export default (state = { authenticated: false }, action) => {
   switch (action.type) {
     case AUTH_USER:
       return Object.assign({}, state, {
@@ -10,16 +10,17 @@ export default (state = {}, action) => {
       });
     case UNAUTH_USER:
       return Object.assign({}, state, {
-        authenticated: false
+        authenticated: false,
+        user: null
       })
     case AUTH_ERR:
       return Object.assign({}, state, {
         error: action.error
       })
     case AUTH_LOADING:
-    return Object.assign({}, state, {
-      isWaiting: action.isWaiting
-    })
+      return Object.assign({}, state, {
+        isWaiting: action.isWaiting
+      })
     default:
       return state;
   }

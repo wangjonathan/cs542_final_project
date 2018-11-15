@@ -3,12 +3,11 @@ import { Link } from 'react-router-dom';
 import { Item, Grid, Image, Message } from 'semantic-ui-react'
 
 const Recommend = props => {
-  // console.log('Recommend', props.movieRecommend);
-  const { movieRecommend } = props;
+  const { centered, movieRecommend } = props;
   return (
     <div>
-      <Grid>
-        {!movieRecommend || movieRecommend.length > 0 ?
+      <Grid padded textAlign={'center'}>
+        {movieRecommend && movieRecommend.length > 0 ?
           movieRecommend.map(movie => (
             <Grid.Column key={movie.movie_id} width={3}>
               <Image src={movie.image} as={Link} to={`/movieDetail/${movie.movie_id}`} />
@@ -18,6 +17,7 @@ const Recommend = props => {
             </Grid.Column>
           )) :
           <Message
+            compact
             warning
             header='There are no recommendation at this point.' />
         }

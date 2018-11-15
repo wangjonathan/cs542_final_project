@@ -1,4 +1,4 @@
-import { GET_MOVIES, SET_MOVIE_RECOMMEND } from '../actions/actionTypes';
+import { SET_USER_MOVIE_RECOMMEND, SET_MOVIE_RECOMMEND } from '../actions/actionTypes';
 
 const defaultState = {
   movies: []
@@ -6,9 +6,9 @@ const defaultState = {
 
 export default (state = {}, action) => {
   switch (action.type) {
-    case GET_MOVIES:
+    case SET_USER_MOVIE_RECOMMEND:
       return Object.assign({}, state, {
-
+        userMovieRecommend: action.payload
       });
     case 'SET_MOVIES':
       return Object.assign({}, state, {

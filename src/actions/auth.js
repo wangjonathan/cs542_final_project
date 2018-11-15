@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { AUTH_USER, UNAUTH_USER, AUTH_ERR, AUTH_LOADING } from './actionTypes';
 import history from '../history/history';
+import { setUserMovieRecommend } from './movies'
 
 var env = process.env.NODE_ENV || 'development';
 const ROOT_URL = env === 'production' ? 'https://cs542-final-project-server.herokuapp.com' : 'http://localhost:5000'
@@ -12,7 +13,7 @@ export function authUser(user) {
   }
 }
 
-export function signoutUser() {
+export function unauthUser() {
   localStorage.removeItem('token');
   return {
     type: UNAUTH_USER
@@ -69,4 +70,11 @@ export const signinUser = ({ email, password }) => {
         dispatch(authLoading('false'));
       })
   }
-}
+};
+
+export function signoutUser() {
+  return dispatch => {
+    dispatch(setUserMovieRecommend([]));
+    dispatch(unauthUser());
+  }
+};

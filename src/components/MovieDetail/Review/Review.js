@@ -32,7 +32,7 @@ const Review = props => {
               </Comment.Metadata>
               <Comment.Text><Rating icon='star' defaultRating={1} />{reviewObj.rating}</Comment.Text>
               <Comment.Text>{reviewObj.review}</Comment.Text>
-              {reviews !== undefined && user !== undefined ?
+              {authenticated && reviews !== undefined && user !== undefined ?
                 (reviewObj.user_id === user.user_id &&
                   <div>
                     <Comment.Actions>
@@ -57,6 +57,7 @@ const Review = props => {
           </Comment>
         )) :
           <Message
+            compact
             warning
             header='There are no review at this point.' />}
         {!authenticated ||

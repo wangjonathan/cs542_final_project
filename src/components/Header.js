@@ -137,6 +137,7 @@ class HeaderBar extends Component {
   handleResultSelect(e, { result }) {
     history.push(`/movieDetail/${result.movie_id}`)
     this.setState({ value: result.title })
+    this.resetComponent();
   }
 
   handleSearchChange(e, { value }) {
