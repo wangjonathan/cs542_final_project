@@ -4,7 +4,7 @@ import history from '../history/history';
 
 var env = process.env.NODE_ENV || 'development';
 const ROOT_URL = env === 'production' ? 'https://cs542-final-project-server.herokuapp.com' : 'http://localhost:5000'
-console.log(ROOT_URL);
+
 export function authUser(user) {
   return {
     type: AUTH_USER,

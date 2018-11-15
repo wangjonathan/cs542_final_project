@@ -1,6 +1,9 @@
 import axios from 'axios';
 import { UPDATE_REVIEWS, SET_REVIEWS, REVIEW_LOADING, SET_MODAL_OPEN } from './actionTypes';
 
+var env = process.env.NODE_ENV || 'development';
+const ROOT_URL = env === 'production' ? 'https://cs542-final-project-server.herokuapp.com' : 'http://localhost:5000'
+
 export function setReviews(reviews) {
   return {
     type: SET_REVIEWS,
@@ -31,7 +34,7 @@ export function updateReviews(newReview) {
 
 export const fetchReviewByMovie = movie_id => {
   return dispatch => {
-    axios.get(`http://localhost:5000/reviewbymovie/${movie_id}`)
+    axios.get(`${ROOT_URL}/reviewbymovie/${movie_id}`)
       .then(res => {
         console.log(res.data);
         dispatch(setReviews(res.data));
@@ -45,7 +48,7 @@ export const fetchReviewByMovie = movie_id => {
 export const addReview = ({ user_id, movie_id, rating, review, date }) => {
   return dispatch => {
     dispatch(reviewLoading(true));
-    axios.post('http://localhost:5000/review', {
+    axios.post(`${ROOT_URL}/review`, {
       user_id,
       movie_id,
       rating,
@@ -68,7 +71,7 @@ export const updateReview = ({ user_id, movie_id, rating, review, date }) => {
   return dispatch => {
     dispatch(setModalOpen(true));
     dispatch(reviewLoading(true));
-    axios.put('http://localhost:5000/review', {
+    axios.put(`${ROOT_URL}/review`, {
       user_id,
       movie_id,
       rating,
