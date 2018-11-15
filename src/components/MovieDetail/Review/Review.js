@@ -4,59 +4,73 @@ import {
   Badge
 } from 'react-bootstrap';
 import {
-  Divider,
   Button,
   Comment,
   Form,
-  Header,
   Label,
   Icon,
   Tab,
   Rating,
-  TextArea
+  TextArea,
+  Message,
+  Modal
 } from 'semantic-ui-react';
+import EditReviewModal from '../EditReviewModal/EditReviewModal';
+import ReviewForm from './ReviewForm';
 
 const Review = props => {
-  const { user, authenticated, isLoading, reviews, review, rating } = props;
+  const { user, authenticated, isLoading, reviews, review, rating, onClickEdit, onClickCancel } = props;
   return (
     <div>
       <Comment.Group>
-        {!reviews || reviews.map(review => (
-          <Comment>
+        {(reviews && reviews.length > 0) ? reviews.map(reviewObj => (
+          <Comment key={reviewObj.user_id}>
             <Comment.Content>
-              <Comment.Author as='a'><Icon name='user circle' />{review.username}</Comment.Author>
+              <Comment.Author as='a'><Icon name='user circle' />{reviewObj.username}</Comment.Author>
               <Comment.Metadata>
-                <div>{review.date}</div>
+                <div>{reviewObj.date}</div>
               </Comment.Metadata>
-              <Comment.Text><Rating icon='star' defaultRating={1} />{review.rating}</Comment.Text>
-              <Comment.Text>{review.review}</Comment.Text>
+              <Comment.Text><Rating icon='star' defaultRating={1} />{reviewObj.rating}</Comment.Text>
+              <Comment.Text>{reviewObj.review}</Comment.Text>
               {reviews !== undefined && user !== undefined ?
-                (reviews.user_id === user.user_id ||
-                  <Comment.Actions>
-                    <Comment.Action>Edit</Comment.Action>
-                  </Comment.Actions>)
+                (reviewObj.user_id === user.user_id &&
+                  <div>
+                    <Comment.Actions>
+                      <Comment.Action as='button' onClick={() => onClickEdit(reviewObj
+                      )}>
+                        Edit
+                  </Comment.Action>
+                    </Comment.Actions>
+                    <EditReviewModal
+                      review={review}
+                      rating={rating}
+                      handleTextAreaChange={props.handleTextAreaChange}
+                      handleRatingChange={props.handleRatingChange}
+                      handleReviewSubmit={props.handleReviewUpdateSubmit}
+                      onClickCancel={onClickCancel} />
+                  </div>
+                )
                 :
-                ""
+                null
               }
             </Comment.Content>
           </Comment>
-        ))}
+        )) :
+          <Message
+            warning
+            header='There are no review at this point.' />}
         {!authenticated ||
-          <Form reply loading={isLoading}>
-            <Form.Field>
-              <label>Your review</label>
-              <TextArea value={review} onChange={props.handleTextAreaChange} />
-            </Form.Field>
-            <Form.Field>
-              <label>Your rating</label>
-              <Rating icon='star' defaultRating={0} maxRating={10} rating={rating} onRate={props.handleRatingChange} />
-            </Form.Field>
-            <Button content='Add Reply' labelPosition='left' icon='edit' primary onClick={props.handleReviewSubmit} />
-          </Form>
+          <ReviewForm
+            loading={isLoading}
+            review={review}
+            rating={rating}
+            handleTextAreaChange={props.handleTextAreaChange}
+            handleRatingChange={props.handleRatingChange}
+            handleReviewSubmit={props.handleReviewSubmit} />
         }
 
       </Comment.Group>
-    </div >
+    </div>
   );
 };
 

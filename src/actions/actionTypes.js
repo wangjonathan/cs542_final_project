@@ -14,7 +14,8 @@ export const UNAUTH_USER = 'UNAUTH_USER';
 export const AUTH_ERR = 'AUTH_ERR';
 
 export const GET_REVIEWS = 'GET_REVIEWS';
-export const SET_REVIEW = 'SET_REVIEW';
 export const SET_REVIEWS = 'SET_REVIEWS';
+export const UPDATE_REVIEWS = 'UPDATE_REVIEWS';
 export const ADD_REVIEW = 'ADD_REVIEW';
 export const REVIEW_LOADING = 'REVIEW_LOADING';
+export const SET_MODAL_OPEN = 'SET_MODAL_OPEN';

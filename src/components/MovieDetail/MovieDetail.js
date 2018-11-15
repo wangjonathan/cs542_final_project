@@ -23,7 +23,7 @@ import Review from './Review/Review';
 import Recommend from './Recommend/Recommend';
 
 import { fetchMovieRecommend } from '../../actions/movies';
-import { setReviews, addReview, fetchReviewByMovie } from '../../actions/review';
+import { setReviews, addReview, updateReview, updateReviews, setModalOpen, fetchReviewByMovie } from '../../actions/review';
 
 class MovieDetail extends Component {
   constructor(props) {
@@ -33,6 +33,8 @@ class MovieDetail extends Component {
     this.handleRatingChange = this.handleRatingChange.bind(this);
     this.handleTextAreaChange = this.handleTextAreaChange.bind(this);
     this.handleReviewSubmit = this.handleReviewSubmit.bind(this);
+    this.handleReviewUpdateSubmit = this.handleReviewUpdateSubmit.bind(this);
+    this.onClickEdit = this.onClickEdit.bind(this);
     const { id } = props.match.params;
     this.state = {
       movie: props.movies.find(movie => movie.movie_id == id),
@@ -57,7 +59,7 @@ class MovieDetail extends Component {
   }
 
   handleRatingChange(e, { rating }) {
-    // console.log(rating);
+    console.log(rating);
     this.setState(Object.assign({}, this.state, {
       rating
     }));
@@ -91,15 +93,43 @@ class MovieDetail extends Component {
     })
   }
 
-  // componentDidUpdate() {
-  //   const { id } = this.props.match.params;
-  //   this.props.fetchMovieRecommend(id);
-  // }
+  handleReviewUpdateSubmit() {
+    const { user, reviews, setReviews } = this.props;
+    const { movie, rating, review } = this.state;
+    const newReview = {
+      user_id: user.user_id,
+      movie_id: movie.movie_id,
+      review,
+      rating,
+      date: Moment(Date.now()).format('MM/DD/YYYY')
+    };
+    this.props.updateReview(newReview);
+    this.props.updateReviews(newReview);
+    // const cloneReviews = reviews.slice(0)
+    // cloneReviews.push(Object.assign({}, newReview, {
+    //   username: user.username
+    // }));
+    // this.props.setReviews(cloneReviews);
+    this.setState({
+      rating: 0,
+      review: ''
+    })
+  }
+
+  onClickEdit(reviewObj) {
+    console.log(reviewObj);
+    const { review, rating } = reviewObj;
+    this.setState({
+      review,
+      rating
+    })
+    this.props.setModalOpen(true);
+  }
 
   render() {
     const { id } = this.props.match.params;
     const { review, rating } = this.state;
-    const { user, authenticated, isLoading, reviews } = this.props;
+    const { user, authenticated, isLoading, reviews, setModalOpen } = this.props;
     const movie = this.props.movies.find(movie => movie.movie_id == id);
     const panes = [
       {
@@ -115,6 +145,9 @@ class MovieDetail extends Component {
               handleTextAreaChange={this.handleTextAreaChange}
               handleReviewSubmit={this.handleReviewSubmit}
               handleRatingChange={this.handleRatingChange}
+              handleReviewUpdateSubmit={this.handleReviewUpdateSubmit}
+              onClickEdit={this.onClickEdit}
+              onClickCancel={setModalOpen}
             />
           </Tab.Pane>
       },
@@ -124,29 +157,17 @@ class MovieDetail extends Component {
     ];
     return (
       <div>
-
         <Container className='container'>
           <Header as='h1' dividing>
             {`${movie.title} (${movie.year})`}
             <small>
               <Rating icon='star' defaultRating={1} /><Badge>{movie.rating}/10</Badge>
             </small>
-            {/* <Button as='div' labelPosition='right' size='tiny'>
-              <Button color='red'>
-                <Icon name='heart' />
-                Like
-            </Button>
-              <Label as='a' basic color='red' pointing='left'>
-                2,048
-             </Label>
-            </Button> */}
-
           </Header>
           <Item.Group relaxed>
             <Item>
               <Item.Image src={movie.image} />
               <Item.Content floated='right' verticalAlign='top'>
-                {/* <Item.Header>{movie.title}</Item.Header> */}
                 <Item.Meta>Genre</Item.Meta>
                 <Item.Description>
                   <List celled horizontal>
@@ -185,14 +206,15 @@ class MovieDetail extends Component {
 const mapStateToProps = state => {
   const { movies, movieRecommend } = state.movies;
   const { user, authenticated } = state.auth;
-  const { reviews, isLoading } = state.review;
+  const { reviews, isLoading, isModalOpen } = state.review;
   return {
     movies,
     movieRecommend,
     user,
     reviews,
     authenticated,
-    isLoading
+    isLoading,
+    isModalOpen
   }
 }
 
@@ -209,6 +231,15 @@ const mapDispatchToProps = dispatch => {
     },
     setReviews(reviews) {
       dispatch(setReviews(reviews));
+    },
+    updateReview(review) {
+      dispatch(updateReview(review));
+    },
+    updateReviews(newReview) {
+      dispatch(updateReviews(newReview));
+    },
+    setModalOpen(isModalOpen) {
+      dispatch(setModalOpen(isModalOpen));
     }
   }
 };

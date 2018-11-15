@@ -1,10 +1,17 @@
-import { SET_REVIEW, SET_REVIEWS, REVIEW_LOADING } from '../actions/actionTypes';
+import { UPDATE_REVIEWS, SET_REVIEWS, REVIEW_LOADING, SET_MODAL_OPEN } from '../actions/actionTypes';
 
-export default (state = { isLoading: false }, action) => {
+export default (state = { isLoading: false, reviews: [] }, action) => {
+  const { reviews } = state;
+  let newReviews = reviews.slice(0);
   switch (action.type) {
-    case SET_REVIEW:
+    case UPDATE_REVIEWS:
       return Object.assign({}, state, {
-        review: action.payload,
+        reviews: newReviews.map(review => {
+          if (review.user_id === action.payload.user_id) {
+            return action.payload
+          };
+          return review;
+        })
       });
     case SET_REVIEWS:
       return Object.assign({}, state, {
@@ -13,6 +20,10 @@ export default (state = { isLoading: false }, action) => {
     case REVIEW_LOADING:
       return Object.assign({}, state, {
         isLoading: action.payload
+      });
+    case SET_MODAL_OPEN:
+      return Object.assign({}, state, {
+        isModalOpen: action.payload
       });
     default:
       return state;

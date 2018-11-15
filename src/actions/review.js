@@ -1,18 +1,5 @@
 import axios from 'axios';
-import { GET_REVIEWS, ADD_REVIEW, SET_REVIEW, SET_REVIEWS, REVIEW_LOADING } from './actionTypes';
-
-export function getReviews(movie_id) {
-  return {
-    type: GET_REVIEWS
-  }
-}
-
-export function setReview(review) {
-  return {
-    type: SET_REVIEW,
-    payload: review
-  }
-}
+import { UPDATE_REVIEWS, SET_REVIEWS, REVIEW_LOADING, SET_MODAL_OPEN } from './actionTypes';
 
 export function setReviews(reviews) {
   return {
@@ -21,10 +8,24 @@ export function setReviews(reviews) {
   }
 }
 
+export function setModalOpen(isOpen) {
+  return {
+    type: SET_MODAL_OPEN,
+    payload: isOpen
+  }
+}
+
 export function reviewLoading(isLoading) {
   return {
     type: REVIEW_LOADING,
     payload: isLoading
+  }
+}
+
+export function updateReviews(newReview) {
+  return {
+    type: UPDATE_REVIEWS,
+    payload: newReview
   }
 }
 
@@ -44,7 +45,7 @@ export const fetchReviewByMovie = movie_id => {
 export const addReview = ({ user_id, movie_id, rating, review, date }) => {
   return dispatch => {
     dispatch(reviewLoading(true));
-    axios.post('http://localhost:5000/reviews', {
+    axios.post('http://localhost:5000/review', {
       user_id,
       movie_id,
       rating,
@@ -53,11 +54,36 @@ export const addReview = ({ user_id, movie_id, rating, review, date }) => {
     })
       .then(res => {
         console.log(res);
-        dispatch(setReview(res.data));
+        // dispatch(setReview(res.data));
         dispatch(reviewLoading(false));
       })
       .catch(err => {
         console.log(err);
+        dispatch(reviewLoading(false));
+      })
+  }
+}
+
+export const updateReview = ({ user_id, movie_id, rating, review, date }) => {
+  return dispatch => {
+    dispatch(setModalOpen(true));
+    dispatch(reviewLoading(true));
+    axios.put('http://localhost:5000/review', {
+      user_id,
+      movie_id,
+      rating,
+      review,
+      date
+    })
+      .then(res => {
+        console.log(res);
+        // dispatch(setReview(res.data));
+        dispatch(setModalOpen(false));
+        dispatch(reviewLoading(false));
+      })
+      .catch(err => {
+        console.log(err);
+        dispatch(setModalOpen(false));
         dispatch(reviewLoading(false));
       })
   }

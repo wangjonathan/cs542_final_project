@@ -8,21 +8,6 @@ export function getMovies(text) {
   }
 }
 
-export function editTodo(id, text) {
-  return {
-    type: 'EDIT_TODO',
-    id,
-    text
-  }
-}
-
-export function removeTodo(id) {
-  return {
-    type: 'REMOVE_TODO',
-    id
-  }
-}
-
 export function setMovies(movies) {
   return {
     type: 'SET_MOVIES',
