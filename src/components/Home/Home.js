@@ -42,7 +42,7 @@ class Home extends Component {
       slidesToScroll: 1,
       // centerMode: true
     };
-    const { authenticated } = this.props;
+    const { authenticated, user } = this.props;
     return (
       <div>
         <Container>
@@ -86,7 +86,7 @@ class Home extends Component {
           {!authenticated ||
             <div>
               <Header attached='top'>
-                Recommend Movies Just for You
+                Recommend Movies Just for {user.username}
               </Header>
               <Segment attached>
                 <Recommend movieRecommend={this.props.userMovieRecommend} />

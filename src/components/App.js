@@ -10,7 +10,7 @@ import MovieList from './MovieList/MovieList';
 import SignUpForm from './SignUpForm/SignUpForm';
 import SignInForm from './SignInForm/SigninForm';
 import history from '../history/history';
-import CustomizedSearch from './AdvancedSearch';
+import CustomizedSearch from './AdvancedSearch/AdvancedSearch';
 import Signout from './Signout';
 
 const App = () => {

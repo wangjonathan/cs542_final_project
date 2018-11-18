@@ -23,7 +23,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 import history from '../history/history';
 import SearchBar from './SearchBar/SearchBar';
 import { signoutUser } from '..//actions/auth';
-import { fetchMovies } from '../actions/movies';
+import { fetchMovies, fetchMovieGenres } from '../actions/movies';
 
 import './SearchBar/SearchBar.css';
 import Logo from '../../image/popcorn.png';
@@ -50,7 +50,7 @@ class HeaderBar extends Component {
 
   componentDidMount() {
     this.props.fetchMovies();
-    // this.props.fetchMoviesByDirector();
+    this.props.fetchMovieGenres();
   }
   
   onChangeDropdown(evt) {
@@ -297,10 +297,13 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchMovies: () => {
+    fetchMovies() {
       dispatch(fetchMovies());
     },
-    signoutUser: () => {
+    fetchMovieGenres() {
+      dispatch(fetchMovieGenres());
+    },
+    signoutUser() {
       dispatch(signoutUser());
     }
   };

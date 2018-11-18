@@ -18,7 +18,7 @@ import {
 } from 'semantic-ui-react'
 
 import { signinUser, signupUser } from '../../actions/auth';
-
+// import { genreOptions } from '../../../constant/options';
 Moment.locale('en')
 momentLocalizer();
 
@@ -41,25 +41,7 @@ class SignUpForm extends Component {
       password: '',
       dob: Moment(new Date()).format('MM/DD/YYYY'),
       fav_genres: [],
-      gender: '',
-      GenreOptions: [
-        { value: 'Romance', key: 'Romance', text: 'Romance' },
-        { value: 'Mystery', key: 'Mystery', text: 'Mystery' },
-        { value: 'Musical', key: 'Musical', text: 'Musical' },
-        { value: 'Fantasy', key: 'Fantasy', text: 'Fantasy' },
-        { value: 'Drama', key: 'Drama', text: 'Drama' },
-        { value: 'Horror', key: 'Horror', text: 'Horror' },
-        { value: 'Biography', key: 'Biography', text: 'Biography' },
-        { value: 'Action', key: 'Action', text: 'Action' },
-        { value: 'Thriller', key: 'Thriller', text: 'Thriller' },
-        { value: 'Sci-Fi', key: 'Sci-Fi', text: 'Sci-Fi' },
-        { value: 'Comedy', key: 'Comedy', text: 'Comedy' },
-        { value: 'Adventure', key: 'Adventure', text: 'Adventure' },
-        { value: 'War', key: 'War', text: 'War' },
-        { value: 'Family', key: 'Family', text: 'Family' },
-        { value: 'Animation', key: 'Animation', text: 'Animation' },
-        { value: 'Crime', key: 'Crime', text: 'Crime' },
-      ]
+      gender: ''
     }
   }
 
@@ -121,7 +103,7 @@ class SignUpForm extends Component {
 
   render() {
     const { filterOptions } = this.state;
-    const { error } = this.props;
+    const { genreOptions, error } = this.props;
     return (
       <div className='container'>
         <Message
@@ -144,7 +126,7 @@ class SignUpForm extends Component {
           </Form.Field>
           <Form.Field>
             <label>Favorite Genre</label>
-            <Dropdown placeholder='Select Genre' fluid multiple search selection options={this.state.GenreOptions} onChange={this.handleGenreChange} />
+            <Dropdown scrolling clearable placeholder='Select Genre' fluid multiple search selection options={genreOptions} onChange={this.handleGenreChange} />
           </Form.Field>
           <Form.Field>
             <label>Date of Birth</label>
@@ -175,12 +157,7 @@ class SignUpForm extends Component {
           <Form.Field>
             <Checkbox label='I agree to the Terms and Conditions' />
           </Form.Field>
-          <Button primary animated onClick={this.handleSubmit}>
-            <Button.Content visible>Submit</Button.Content>
-            <Button.Content hidden>
-              <Icon name='hand point up outline' />
-            </Button.Content>
-          </Button>
+          <Button primary onClick={this.handleSubmit}>Submit</Button>
         </Form>
         <Message attached='bottom' success>
           <Icon name='check' />
@@ -192,9 +169,15 @@ class SignUpForm extends Component {
 };
 
 const mapStateToProps = state => {
-  const { auth } = state;
+  const { auth, movies } = state;
+  const { genres } = movies;
   return {
     error: auth.error,
+    genreOptions: genres.map(genre => ({
+      key: genre,
+      value: genre,
+      text: genre
+    })),
     isWaiting: auth.isWaiting
   }
 };

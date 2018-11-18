@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { SET_USER_MOVIE_RECOMMEND, GET_MOVIE_RECOMMEND, SET_MOVIE_RECOMMEND } from './actionTypes';
+import { SET_MOVIE_GENRES, SET_USER_MOVIE_RECOMMEND, GET_MOVIE_RECOMMEND, SET_MOVIE_RECOMMEND } from './actionTypes';
+import { setMovieSearchResult, isAdvancedSearchLoading } from './advancedSearch'
 
 var env = process.env.NODE_ENV || 'development';
 const ROOT_URL = env === 'production' ? 'https://cs542-final-project-server.herokuapp.com' : 'http://localhost:5000'
@@ -18,6 +19,13 @@ export function setMovies(movies) {
   }
 }
 
+export function setMovieGenres(genres) {
+  return {
+    type: SET_MOVIE_GENRES,
+    payload: genres
+  }
+}
+
 export function setMovieRecommend(movieRecommend) {
   return {
     type: SET_MOVIE_RECOMMEND,
@@ -25,12 +33,28 @@ export function setMovieRecommend(movieRecommend) {
   }
 }
 
+export const fetchMovieGenres = () => {
+  return dispatch => {
+    axios.get(`${ROOT_URL}/genres`)
+      .then(res => {
+        console.log(res);
+        dispatch(setMovieGenres(res.data));
+      })
+      .catch(err => {
+        console.log(err);
+      })
+  }
+};
+
 export const fetchMovies = () => {
   return dispatch => {
     axios.get(`${ROOT_URL}/movies`, {})
       .then(res => {
         console.log(res);
-        dispatch(setMovies(res.data));
+        dispatch(setMovies(res.data.map(movie => (Object.assign({}, movie, {
+          genre: movie.genre.map(genre => genre.genre),
+          actor: movie.actor.map(actor => actor.actor_name)
+        })))));
       })
       .catch(err => {
         console.log(err);
@@ -38,7 +62,7 @@ export const fetchMovies = () => {
   }
 }
 
-export const fetchMoviesByDirector = (director) => {
+export const fetchMoviesByDirector = director => {
   return dispatch => {
     axios.get(`${ROOT_URL}/searchdirector`, {
       params: {
@@ -71,7 +95,7 @@ export const fetchMovieRecommend = movie_id => {
         console.log(err);
       })
   }
-} 
+}
 
 export const fetchMovieRecommendForUser = user_id => {
   return dispatch => {
@@ -86,4 +110,34 @@ export const fetchMovieRecommendForUser = user_id => {
         console.log(err);
       })
   }
-} 
+}
+
+export const fetchMoviesByRating = movieSearch => {
+  const { ratingStart, ratingEnd, genres, yearStart, yearEnd, director, actor } = movieSearch
+  return dispatch => {
+    dispatch(isAdvancedSearchLoading(true));
+    axios.get(`${ROOT_URL}/advanceSearchForMovies`, {
+      params: {
+        ratingStart,
+        ratingEnd,
+        yearStart,
+        yearEnd,
+        genres,
+        director,
+        actor
+      }
+    })
+      .then(res => {
+        console.log(res);
+        dispatch(setMovieSearchResult(res.data.map(movie => (Object.assign({}, movie, {
+          genre: movie.genre.map(genre => genre.genre),
+          actor: movie.actor.map(actor => actor.actor_name)
+        })))));
+        dispatch(isAdvancedSearchLoading(false));
+      })
+      .catch(err => {
+        console.log(err);
+        dispatch(isAdvancedSearchLoading(false));
+      })
+  }
+}

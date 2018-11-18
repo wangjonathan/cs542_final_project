@@ -21,7 +21,7 @@ import Moment from 'moment'
 
 import Review from './Review/Review';
 import Recommend from './Recommend/Recommend';
-
+import MovieListItem from '../MovieList/MoiveListItem/MovieListItem';
 import { fetchMovieRecommend } from '../../actions/movies';
 import { setReviews, addReview, updateReview, updateReviews, setModalOpen, fetchReviewByMovie } from '../../actions/review';
 
@@ -165,7 +165,8 @@ class MovieDetail extends Component {
             </small>
           </Header>
           <Item.Group relaxed>
-            <Item>
+            <MovieListItem movie={movie} />
+            {/* <Item>
               <Item.Image src={movie.image} />
               <Item.Content floated='right' verticalAlign='top'>
                 <Item.Meta>Genre</Item.Meta>
@@ -193,7 +194,7 @@ class MovieDetail extends Component {
                   {movie.duration} mins
                 </Item.Description>
               </Item.Content>
-            </Item>
+            </Item> */}
           </Item.Group>
           <Tab menu={{ secondary: true, pointing: true }} panes={panes} />
         </Container>
