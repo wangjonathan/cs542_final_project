@@ -1,3 +1,4 @@
+const _ = require('lodash');
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
@@ -15,12 +16,6 @@ import SearchForm from './SearchForm/SearchForm';
 import MovieList from '../MovieList/MovieList';
 import { setSortBy, setFilterBy } from '../../actions/advancedSearch';
 import selectors, { filterSelectors } from '../../selectors/selectors';
-
-const autoGenerateOptions = (start, end) => {
-  return Array(end - start + 1)
-    .fill()
-    .map(() => (start++))
-};
 
 class AdvancedSearch extends Component {
   constructor(props) {
@@ -93,7 +88,6 @@ class AdvancedSearch extends Component {
   };
 
   handleSortByClick(e, { name }) {
-    console.log(name);
     this.setState({
       sortBy: name
     });
@@ -110,11 +104,9 @@ class AdvancedSearch extends Component {
   }
 
   render() {
-    const { movieSearch, movies } = this.props;
+    const { movieSearch, movies, filterYears } = this.props;
     const { sortBy, filterBy } = this.state;
     const { genres = [], yearStart, yearEnd } = movieSearch;
-    const years = (yearStart && yearEnd) ? autoGenerateOptions(yearStart, yearEnd) : [];
-    console.log('isFilterActivated', this.isFilterActivated());
     const isFilterActivated = this.isFilterActivated();
     return (
       <div>
@@ -129,7 +121,7 @@ class AdvancedSearch extends Component {
             {(movies && movies.length > 0) &&
               <Grid.Row>
                 <Grid.Column width={4}>
-                  <Filter filterBy={filterBy} genres={genres} years={years} handleFilterClick={this.handleFilterClick} />
+                  <Filter filterBy={filterBy} genres={genres} years={filterYears} handleFilterClick={this.handleFilterClick} />
                 </Grid.Column>
                 <Grid.Column width={10}>
                   <Menu text>
@@ -170,10 +162,11 @@ class AdvancedSearch extends Component {
 };
 
 const mapStateToProps = state => {
-  const { movieSearch, result, sortBy, filterBy } = state.advancedSearch;
+  const { movieSearch, result = [], sortBy, filterBy } = state.advancedSearch;
   return {
     movieSearch,
-    movies: result ? filterSelectors(selectors(result, sortBy), filterBy) : null
+    movies: result ? filterSelectors(selectors(result, sortBy), filterBy) : null,
+    filterYears: _.uniq(result.map(movie => movie.year))
   }
 };
 

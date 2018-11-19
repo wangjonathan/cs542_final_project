@@ -50,7 +50,7 @@ class MovieDetail extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.match.params !== this.props.match.params) {
-      // console.log('update');
+      console.log('update');
       const { id } = this.props.match.params;
       this.props.fetchMovieRecommend(id);
       this.props.fetchReviewByMovie(id);

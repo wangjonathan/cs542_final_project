@@ -53,7 +53,10 @@ export const fetchMovies = () => {
         console.log(res);
         dispatch(setMovies(res.data.map(movie => (Object.assign({}, movie, {
           genre: movie.genre.map(genre => genre.genre),
-          actor: movie.actor.map(actor => actor.actor_name)
+          actor: movie.actor.map(actor => actor.actor_name),
+          duration: +movie.duration,
+          year: +movie.year,
+          rating: +movie.rating
         })))));
       })
       .catch(err => {
@@ -131,7 +134,10 @@ export const fetchMoviesByRating = movieSearch => {
         console.log(res);
         dispatch(setMovieSearchResult(res.data.map(movie => (Object.assign({}, movie, {
           genre: movie.genre.map(genre => genre.genre),
-          actor: movie.actor.map(actor => actor.actor_name)
+          actor: movie.actor.map(actor => actor.actor_name),
+          duration: +movie.duration,
+          year: +movie.year,
+          rating: +movie.rating
         })))));
         dispatch(isAdvancedSearchLoading(false));
       })

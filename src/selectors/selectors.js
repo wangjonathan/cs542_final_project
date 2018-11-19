@@ -21,18 +21,18 @@ export function filterSelectors(movies = [], filterBy) {
   let result = movies;
   if ((filterByGenre.length > 0) && (filterByYear.length > 0)) {
     result = movies.filter(movie => {
-      console.log('filterByBoth');
-      return (_.intersection(movie.genre, filterByGenre).length > 0) && (_.includes(filterByYear, +movie.year));
+      // console.log('filterByBoth');
+      return (_.intersection(movie.genre, filterByGenre).length > 0) && (_.includes(filterByYear, movie.year));
     });
   } else if ((filterByGenre.length > 0) && (filterByYear.length === 0)) {
     result = movies.filter(movie => {
-      console.log('filterByGenre');
+      // console.log('filterByGenre');
       return (_.intersection(movie.genre, filterByGenre).length > 0);
     });
   } else if ((filterByYear.length > 0) && (filterByGenre.length === 0)) {
     result = movies.filter(movie => {
-      console.log('filterByYear');
-      return (_.includes(filterByYear, +movie.year));
+      // console.log('filterByYear');
+      return (_.includes(filterByYear, movie.year));
     });
   }
   return result;

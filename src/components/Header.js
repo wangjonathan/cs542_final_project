@@ -10,14 +10,14 @@ import {
   NavDropdown,
   MenuItem,
 } from 'react-bootstrap';
-import { 
-  Search, 
-  Grid, 
-  Header, 
-  Segment, 
-  Image, 
-  Dropdown, 
-  Icon 
+import {
+  Search,
+  Grid,
+  Header,
+  Segment,
+  Image,
+  Dropdown,
+  Icon
 } from 'semantic-ui-react'
 import { LinkContainer } from 'react-router-bootstrap';
 import history from '../history/history';
@@ -52,7 +52,7 @@ class HeaderBar extends Component {
     this.props.fetchMovies();
     this.props.fetchMovieGenres();
   }
-  
+
   onChangeDropdown(evt) {
     this.setState({ searchBy: evt })
   }
@@ -151,6 +151,12 @@ class HeaderBar extends Component {
 
       const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
       var isMatch = result => {
+        if (searchBy === 'actor') {
+          console.log('result', result);
+          if (result[searchBy].find(actor => re.test(actor)))
+            return true;
+          return false;
+        }
         return re.test(result[searchBy])
       }
 
@@ -229,14 +235,14 @@ class HeaderBar extends Component {
             </Nav>
             <Nav>
               <NavDropdown eventKey={3} title={this.state.sortBy} id="basic-nav-dropdown" onSelect={this.handleSortByChange}>
-                <MenuItem eventKey='title ascending'>Title<Icon name='sort alphabet down'/></MenuItem>
-                <MenuItem eventKey='title descending'>Title<Icon name='sort alphabet up'/></MenuItem>
-                <MenuItem eventKey='highest rating'>Rating<Icon name='sort numeric down'/></MenuItem>
-                <MenuItem eventKey='lowest rating'>Rating<Icon name='sort numeric up'/></MenuItem>
-                <MenuItem eventKey='highest gross'>Gross<Icon name='sort amount down'/></MenuItem>
-                <MenuItem eventKey='lowest gross'>Gross<Icon name='sort amount up'/></MenuItem>
-                <MenuItem eventKey='longest duration'>Duration<Icon name='sort amount down'/></MenuItem>
-                <MenuItem eventKey='shortest duration'>Duration<Icon name='sort amount up'/></MenuItem>
+                <MenuItem eventKey='title ascending'>Title<Icon name='sort alphabet down' /></MenuItem>
+                <MenuItem eventKey='title descending'>Title<Icon name='sort alphabet up' /></MenuItem>
+                <MenuItem eventKey='highest rating'>Rating<Icon name='sort numeric down' /></MenuItem>
+                <MenuItem eventKey='lowest rating'>Rating<Icon name='sort numeric up' /></MenuItem>
+                <MenuItem eventKey='highest gross'>Gross<Icon name='sort amount down' /></MenuItem>
+                <MenuItem eventKey='lowest gross'>Gross<Icon name='sort amount up' /></MenuItem>
+                <MenuItem eventKey='longest duration'>Duration<Icon name='sort amount down' /></MenuItem>
+                <MenuItem eventKey='shortest duration'>Duration<Icon name='sort amount up' /></MenuItem>
                 <MenuItem eventKey='newest'>Newest</MenuItem>
                 <MenuItem eventKey='oldest'>Oldest</MenuItem>
               </NavDropdown>
